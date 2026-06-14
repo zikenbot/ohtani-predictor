@@ -94,6 +94,8 @@ DESC_LABELS = {
     "foul": "ファウル", "foul_tip": "ファウルチップ",
     "hit_into_play": "インプレー", "blocked_ball": "ブロック", "pitchout": "ピッチアウト",
 }
+# インプレー結果ごとの Plotly マーカー記号
+INPLAY_SYMBOLS = {"out": "x", "hit": "diamond", "hr": "star"}
 # MLB Stats API description → Statcast style
 MLB_DESC_MAP = {
     "ball": "ball", "called strike": "called_strike",
@@ -115,6 +117,17 @@ METRIC_HELP = {
 }
 
 # ─── ヘルパー ──────────────────────────────────────────────
+def _inplay_kind(event_val) -> str:
+    """インプレー結果を 'out' / 'hit' / 'hr' に分類する。"""
+    if event_val is None or (isinstance(event_val, float) and np.isnan(event_val)):
+        return "out"
+    ev = str(event_val).lower().replace(" ", "_")
+    if ev == "home_run":
+        return "hr"
+    if ev in ("single", "double", "triple"):
+        return "hit"
+    return "out"
+
 def fmt(v, digits=3):
     return f"{v:.{digits}f}" if v is not None else "---"
 
@@ -194,8 +207,8 @@ def _zone_layout(title: str) -> dict:
             scaleratio=1,
         ),
         legend=dict(font=dict(color="#ccc", size=11), bgcolor="rgba(0,0,0,0)",
-                    orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
-        margin=dict(l=10, r=10, t=60, b=40),
+                    orientation="h", yanchor="top", y=-0.14, xanchor="center", x=0.5),
+        margin=dict(l=10, r=10, t=50, b=120),
         height=500,
         hoverlabel=dict(bgcolor="#1a2535", font_color="#fff", font_size=13),
     )
@@ -217,11 +230,19 @@ def build_zone_fig_history(pitch_df: pd.DataFrame, title: str) -> go.Figure:
             f"日付: {row.game_date.strftime('%m/%d') if pd.notna(row.game_date) else ''}"
             for row in sub.itertuples()
         ]
+        # インプレー結果で形状を分ける（色は球種色を維持）
+        symbols = [
+            INPLAY_SYMBOLS[_inplay_kind(getattr(r, "events", None))]
+            if str(getattr(r, "description", "")) == "hit_into_play"
+            else "circle"
+            for r in sub.itertuples()
+        ]
         fig.add_trace(go.Scatter(
             x=sub["plate_x"], y=sub["plate_z"],
             mode="markers",
             name=f"{pt} {label_jp}",
             marker=dict(color=color, size=10, opacity=0.82,
+                        symbol=symbols,
                         line=dict(color="rgba(0,0,0,0.5)", width=0.8)),
             text=hover,
             hovertemplate="%{text}<extra></extra>",
@@ -243,14 +264,27 @@ def build_zone_fig_live(pitch_df: pd.DataFrame, title: str) -> go.Figure:
     # 凡例トレース（ダミー、表示用）
     shown_descs: set[str] = set()
     for desc, color in RESULT_COLORS.items():
-        if desc in ("swinging_strike_blocked", "foul_tip", "pitchout", "blocked_ball"):
-            continue  # まとめて表示
+        if desc in ("swinging_strike_blocked", "foul_tip", "pitchout", "blocked_ball", "hit_into_play"):
+            continue  # インプレーは下で3種に分けて表示
         shown_descs.add(desc)
         fig.add_trace(go.Scatter(
             x=[None], y=[None], mode="markers",
             marker=dict(color=color, size=12, symbol="circle"),
             name=DESC_LABELS.get(desc, desc),
             legendgroup=desc,
+        ))
+    # インプレー3種の凡例
+    ip_color = RESULT_COLORS["hit_into_play"]
+    for kind, sym, label in [
+        ("out", "x",       "インプレー（アウト）"),
+        ("hit", "diamond", "インプレー（安打）"),
+        ("hr",  "star",    "インプレー（本塁打）"),
+    ]:
+        fig.add_trace(go.Scatter(
+            x=[None], y=[None], mode="markers",
+            marker=dict(color=ip_color, size=12, symbol=sym),
+            name=label,
+            legendgroup=f"inplay_{kind}",
         ))
 
     # 打席ごとに番号をリセット
@@ -276,17 +310,33 @@ def build_zone_fig_live(pitch_df: pd.DataFrame, title: str) -> go.Figure:
             f"{desc_label}{ev_str}"
         )
 
-        # 円マーカー（大きめ）
-        fig.add_trace(go.Scatter(
-            x=[row["plate_x"]], y=[row["plate_z"]],
-            mode="markers+text",
-            marker=dict(color=color, size=26, line=dict(color="white", width=1.8)),
-            text=[str(pitch_num)],
-            textfont=dict(color=txt_color, size=10, family="Arial Black"),
-            textposition="middle center",
-            hovertemplate=hover + "<extra></extra>",
-            showlegend=False,
-        ))
+        # インプレーは形状で打席結果を表現、それ以外は番号付き円
+        if desc == "hit_into_play":
+            kind   = _inplay_kind(ev)
+            symbol = INPLAY_SYMBOLS[kind]
+            fig.add_trace(go.Scatter(
+                x=[row["plate_x"]], y=[row["plate_z"]],
+                mode="markers+text",
+                marker=dict(color=color, size=24, symbol=symbol,
+                            line=dict(color="white", width=2.0)),
+                text=[str(pitch_num)],
+                textfont=dict(color="#fff", size=9, family="Arial Black"),
+                textposition="top center",
+                hovertemplate=hover + "<extra></extra>",
+                showlegend=False,
+            ))
+        else:
+            fig.add_trace(go.Scatter(
+                x=[row["plate_x"]], y=[row["plate_z"]],
+                mode="markers+text",
+                marker=dict(color=color, size=26, symbol="circle",
+                            line=dict(color="white", width=1.8)),
+                text=[str(pitch_num)],
+                textfont=dict(color=txt_color, size=10, family="Arial Black"),
+                textposition="middle center",
+                hovertemplate=hover + "<extra></extra>",
+                showlegend=False,
+            ))
 
     fig.update_layout(**_zone_layout(title))
     return fig
