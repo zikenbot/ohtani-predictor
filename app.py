@@ -168,11 +168,11 @@ def build_pitch_zone_fig(pitch_df: pd.DataFrame, title: str) -> go.Figure:
     # 9分割グリッド
     for x in [-SZ_X + SZ_X*2/3, SZ_X - SZ_X*2/3]:
         fig.add_shape(type="line", x0=x, x1=x, y0=SZ_BOT, y1=SZ_TOP,
-                      line=dict(color="#ffffff44", width=1))
+                      line=dict(color="rgba(255,255,255,0.27)", width=1))
     h_step = (SZ_TOP - SZ_BOT) / 3
     for y in [SZ_BOT + h_step, SZ_BOT + h_step*2]:
         fig.add_shape(type="line", x0=-SZ_X, x1=SZ_X, y0=y, y1=y,
-                      line=dict(color="#ffffff44", width=1))
+                      line=dict(color="rgba(255,255,255,0.27)", width=1))
 
     # ホームプレート（五角形）
     plate_y = 0.3
