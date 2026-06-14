@@ -11,12 +11,14 @@ warnings.filterwarnings("ignore", category=RuntimeWarning)
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import requests
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent))
 from predict import run_prediction, _load_schedule
 
 DATA_DIR = Path(__file__).parent / "data"
+OHTANI_ID = 660271
 
 # ─── ページ設定 ────────────────────────────────────────────
 st.set_page_config(
@@ -30,10 +32,7 @@ st.set_page_config(
 st.markdown("""
 <style>
   [data-testid="metric-container"] {
-    background: #1e2a3a;
-    border-radius: 12px;
-    padding: 12px 16px;
-    margin: 4px 0;
+    background: #1e2a3a; border-radius: 12px; padding: 12px 16px; margin: 4px 0;
   }
   [data-testid="metric-container"] label { font-size: 0.75rem; color: #8899aa; }
   [data-testid="metric-container"] [data-testid="stMetricValue"] {
@@ -71,29 +70,41 @@ PITCH_LABELS = {
     "CH": "チェンジアップ", "FS": "スプリット", "KC": "ナックルカーブ",
     "SV": "スローカーブ", "CS": "スローカーブ",
 }
+# 結果別カラー（番号付き円マーカー用）
+RESULT_COLORS = {
+    "ball":                    "#43a047",  # 緑
+    "called_strike":           "#e53935",  # 赤
+    "swinging_strike":         "#fb8c00",  # オレンジ
+    "swinging_strike_blocked": "#fb8c00",
+    "foul":                    "#fdd835",  # 黄
+    "foul_tip":                "#fdd835",
+    "hit_into_play":           "#1e88e5",  # 青
+    "blocked_ball":            "#78909c",  # グレー
+    "pitchout":                "#78909c",
+}
+RESULT_TEXT_COLORS = {
+    "ball": "#fff", "called_strike": "#fff",
+    "swinging_strike": "#fff", "swinging_strike_blocked": "#fff",
+    "foul": "#222", "foul_tip": "#222",
+    "hit_into_play": "#fff", "blocked_ball": "#fff", "pitchout": "#fff",
+}
 DESC_LABELS = {
-    "ball": "ボール",
-    "called_strike": "見逃しストライク",
-    "swinging_strike": "空振り",
-    "swinging_strike_blocked": "空振り",
-    "foul": "ファウル",
-    "foul_tip": "ファウルチップ",
-    "hit_into_play": "インプレー",
-    "blocked_ball": "ブロックボール",
-    "pitchout": "ピッチアウト",
+    "ball": "ボール", "called_strike": "見逃し",
+    "swinging_strike": "空振り", "swinging_strike_blocked": "空振り(ブロック)",
+    "foul": "ファウル", "foul_tip": "ファウルチップ",
+    "hit_into_play": "インプレー", "blocked_ball": "ブロック", "pitchout": "ピッチアウト",
 }
-DESC_SYMBOLS = {
-    "ball": "circle",
-    "called_strike": "x",
-    "swinging_strike": "x-open",
-    "swinging_strike_blocked": "x-open",
-    "foul": "triangle-up",
-    "foul_tip": "triangle-up-open",
-    "hit_into_play": "star",
-    "blocked_ball": "circle-open",
+# MLB Stats API description → Statcast style
+MLB_DESC_MAP = {
+    "ball": "ball", "called strike": "called_strike",
+    "swinging strike": "swinging_strike", "swinging strike (blocked)": "swinging_strike_blocked",
+    "foul": "foul", "foul tip": "foul_tip", "foul bunt": "foul",
+    "in play, no out": "hit_into_play", "in play, out(s)": "hit_into_play",
+    "in play, run(s)": "hit_into_play", "blocked ball": "blocked_ball",
+    "pitchout": "pitchout", "intent ball": "ball",
+    "automatic ball": "ball", "automatic strike": "called_strike",
+    "hit by pitch": "ball",
 }
-
-# 指標の説明テキスト
 METRIC_HELP = {
     "wOBA":  "加重出塁率（Weighted On-Base Average）。打席結果に打点価値の重みをつけた指標。リーグ平均は約0.320。高いほど優秀。",
     "xwOBA": "期待加重出塁率。打球の速度・角度から計算した「本来の」wOBA。守備の運不運を除いた真の打力を示す。",
@@ -101,7 +112,6 @@ METRIC_HELP = {
     "K率":   "三振率（Strikeout Rate）。打席のうち三振になる割合。低いほど良い。MLBリーグ平均は約22〜23%。",
     "BB率":  "四球率（Walk Rate）。打席のうち四球になる割合。高いほど選球眼が良い。リーグ平均は約8〜9%。",
     "空振り率": "Whiff Rate。スイングのうち空振りになる割合。低いほどコンタクト能力が高い。リーグ平均は約25%。",
-    "Swing%": "スイング率。投球のうちスイングする割合。",
 }
 
 # ─── ヘルパー ──────────────────────────────────────────────
@@ -131,6 +141,202 @@ def pitch_badge(pt, pct_val=None):
     extra = f" {pct_val*100:.0f}%" if pct_val else ""
     return f'<span class="pitch-badge" style="background:{color}22;color:{color};border:1px solid {color}">{pt} {label}{extra}</span>'
 
+# ─── ストライクゾーン共通シェイプ ──────────────────────────
+SZ_X   = 0.708   # 半幅（ft）
+SZ_BOT = 1.55
+SZ_TOP = 3.40
+
+def _add_zone_shapes(fig: go.Figure) -> None:
+    """ストライクゾーン + 3×3グリッド + ホームプレートを追加"""
+    # ゾーン枠
+    fig.add_shape(type="rect",
+        x0=-SZ_X, x1=SZ_X, y0=SZ_BOT, y1=SZ_TOP,
+        line=dict(color="white", width=2.5),
+        fillcolor="rgba(255,255,255,0.07)",
+    )
+    # 縦 2本
+    col_w = SZ_X * 2 / 3
+    for x in (-SZ_X + col_w, -SZ_X + col_w * 2):
+        fig.add_shape(type="line", x0=x, x1=x, y0=SZ_BOT, y1=SZ_TOP,
+                      line=dict(color="rgba(255,255,255,0.45)", width=1))
+    # 横 2本
+    row_h = (SZ_TOP - SZ_BOT) / 3
+    for y in (SZ_BOT + row_h, SZ_BOT + row_h * 2):
+        fig.add_shape(type="line", x0=-SZ_X, x1=SZ_X, y0=y, y1=y,
+                      line=dict(color="rgba(255,255,255,0.45)", width=1))
+    # ホームプレート（五角形）
+    fig.add_shape(type="path",
+        path="M -0.708,0.42 L 0.708,0.42 L 0.708,0.16 L 0,0 L -0.708,0.16 Z",
+        fillcolor="rgba(255,255,255,0.88)",
+        line=dict(color="white", width=1.5),
+    )
+
+def _zone_layout(title: str) -> dict:
+    return dict(
+        title=dict(text=title, font=dict(size=13, color="#ccc"), x=0.5),
+        paper_bgcolor="rgba(0,0,0,0)",
+        plot_bgcolor="rgba(15,50,15,1)",          # ダークグリーン（フィールド風）
+        xaxis=dict(
+            range=[-2.0, 2.0], tickfont=dict(color="#aaa"), gridcolor="rgba(255,255,255,0.05)",
+            zeroline=False,
+            title=dict(text="← 外角（大谷左打ち）　内角 →", font=dict(color="#aaa", size=11)),
+        ),
+        yaxis=dict(
+            range=[0, 5], tickfont=dict(color="#aaa"), gridcolor="rgba(255,255,255,0.05)",
+            zeroline=False,
+            title=dict(text="高さ (ft)", font=dict(color="#aaa", size=11)),
+        ),
+        legend=dict(font=dict(color="#ccc", size=11), bgcolor="rgba(0,0,0,0)",
+                    orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
+        margin=dict(l=10, r=10, t=60, b=40),
+        height=430,
+        hoverlabel=dict(bgcolor="#1a2535", font_color="#fff", font_size=13),
+    )
+
+# ─── 過去対戦図（球種別カラー点群） ────────────────────────
+def build_zone_fig_history(pitch_df: pd.DataFrame, title: str) -> go.Figure:
+    fig = go.Figure()
+    _add_zone_shapes(fig)
+
+    for pt, color in PITCH_COLORS.items():
+        sub = pitch_df[pitch_df["pitch_type"] == pt].dropna(subset=["plate_x", "plate_z"])
+        if sub.empty:
+            continue
+        label_jp = PITCH_LABELS.get(pt, pt)
+        hover = [
+            f"<b>{pt} {label_jp}</b><br>"
+            f"球速: {row.release_speed:.1f} mph<br>"
+            f"結果: {DESC_LABELS.get(row.description, row.description)}<br>"
+            f"日付: {row.game_date.strftime('%m/%d') if pd.notna(row.game_date) else ''}"
+            for row in sub.itertuples()
+        ]
+        fig.add_trace(go.Scatter(
+            x=sub["plate_x"], y=sub["plate_z"],
+            mode="markers",
+            name=f"{pt} {label_jp}",
+            marker=dict(color=color, size=10, opacity=0.82,
+                        line=dict(color="rgba(0,0,0,0.5)", width=0.8)),
+            text=hover,
+            hovertemplate="%{text}<extra></extra>",
+        ))
+
+    fig.update_layout(**_zone_layout(title))
+    return fig
+
+# ─── 今試合図（結果色 × 投球順番号マーカー） ───────────────
+def build_zone_fig_live(pitch_df: pd.DataFrame, title: str) -> go.Figure:
+    """1球ずつ番号付き円マーカー。参照画像スタイル。"""
+    fig = go.Figure()
+    _add_zone_shapes(fig)
+
+    if pitch_df.empty:
+        fig.update_layout(**_zone_layout(title))
+        return fig
+
+    # 凡例トレース（ダミー、表示用）
+    shown_descs: set[str] = set()
+    for desc, color in RESULT_COLORS.items():
+        if desc in ("swinging_strike_blocked", "foul_tip", "pitchout", "blocked_ball"):
+            continue  # まとめて表示
+        shown_descs.add(desc)
+        fig.add_trace(go.Scatter(
+            x=[None], y=[None], mode="markers",
+            marker=dict(color=color, size=12, symbol="circle"),
+            name=DESC_LABELS.get(desc, desc),
+            legendgroup=desc,
+        ))
+
+    # 打席ごとに番号をリセット
+    pitch_num = 0
+    for _, row in pitch_df.sort_values(["at_bat_number", "pitch_number"]).iterrows():
+        if pd.isna(row.get("plate_x")) or pd.isna(row.get("plate_z")):
+            continue
+        pitch_num += 1
+        desc = str(row.get("description", "")).lower().replace(" ", "_")
+        color = RESULT_COLORS.get(desc, "#78909c")
+        txt_color = RESULT_TEXT_COLORS.get(desc, "#fff")
+        pt = row.get("pitch_type", "")
+        pt_label = PITCH_LABELS.get(pt, pt)
+        velo = f"{row['release_speed']:.0f}" if pd.notna(row.get("release_speed")) else "?"
+        desc_label = DESC_LABELS.get(desc, desc)
+        ev = row.get("events", "")
+        ev_str = f" → {ev}" if pd.notna(ev) and ev else ""
+        ab_num = int(row.get("at_bat_number", 0))
+
+        hover = (
+            f"<b>#{pitch_num}　第{ab_num}打席</b><br>"
+            f"{pt} {pt_label}　{velo} mph<br>"
+            f"{desc_label}{ev_str}"
+        )
+
+        # 円マーカー（大きめ）
+        fig.add_trace(go.Scatter(
+            x=[row["plate_x"]], y=[row["plate_z"]],
+            mode="markers+text",
+            marker=dict(color=color, size=26, line=dict(color="white", width=1.8)),
+            text=[str(pitch_num)],
+            textfont=dict(color=txt_color, size=10, family="Arial Black"),
+            textposition="middle center",
+            hovertemplate=hover + "<extra></extra>",
+            showlegend=False,
+        ))
+
+    fig.update_layout(**_zone_layout(title))
+    return fig
+
+# ─── MLB Stats API ライブフィード取得 ──────────────────────
+@st.cache_data(ttl=60, show_spinner=False)   # 60秒キャッシュ（ライブ更新対応）
+def fetch_live_pitches(game_pk: int) -> tuple[pd.DataFrame, str]:
+    """
+    Ohtani 打席の投球データを MLB Stats API ライブフィードから取得。
+    返り値: (df, game_status)  game_status = "Preview" / "Live" / "Final"
+    """
+    try:
+        url = f"https://statsapi.mlb.com/api/v1.1/game/{game_pk}/feed/live"
+        r = requests.get(url, timeout=15)
+        r.raise_for_status()
+        data = r.json()
+    except Exception:
+        return pd.DataFrame(), "Error"
+
+    game_status = data.get("gameData", {}).get("status", {}).get("abstractGameState", "Preview")
+    if game_status == "Preview":
+        return pd.DataFrame(), game_status
+
+    rows = []
+    all_plays = data.get("liveData", {}).get("plays", {}).get("allPlays", [])
+    for play in all_plays:
+        if play.get("matchup", {}).get("batter", {}).get("id") != OHTANI_ID:
+            continue
+        ab_num = play.get("atBatIndex", 0) + 1
+        play_events = play.get("playEvents", [])
+        for event in play_events:
+            if event.get("type") != "pitch":
+                continue
+            pd_data = event.get("pitchData", {})
+            coords = pd_data.get("coordinates", {})
+            details = event.get("details", {})
+            raw_desc = details.get("description", "").lower()
+            desc = MLB_DESC_MAP.get(raw_desc, raw_desc.replace(" ", "_"))
+
+            # 最後のイベントにのみ result event を付与
+            is_last = (event == play_events[-1])
+            ev = play.get("result", {}).get("event", "") if is_last else None
+
+            rows.append({
+                "game_date": pd.Timestamp("today"),
+                "at_bat_number": ab_num,
+                "pitch_number": event.get("pitchNumber", len(rows) + 1),
+                "pitch_type": details.get("type", {}).get("code", ""),
+                "release_speed": pd_data.get("startSpeed"),
+                "plate_x": coords.get("pX"),
+                "plate_z": coords.get("pZ"),
+                "description": desc,
+                "events": ev,
+            })
+
+    return pd.DataFrame(rows) if rows else pd.DataFrame(), game_status
+
 # ─── キャッシュ付きデータ読み込み ──────────────────────────
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_schedule_cached():
@@ -149,120 +355,9 @@ def load_ohtani_batter_cached():
     df["game_date"] = pd.to_datetime(df["game_date"])
     return df
 
-# ─── 球コース図 ────────────────────────────────────────────
-def build_pitch_zone_fig(pitch_df: pd.DataFrame, title: str) -> go.Figure:
-    """Statcast の plate_x / plate_z をストライクゾーンに重ねた散布図を返す"""
-    fig = go.Figure()
-
-    # ストライクゾーン（規格: 幅 17 インチ = ±0.708 ft, 高さは Ohtani 実測平均値）
-    SZ_X = 0.708
-    SZ_BOT = 1.55
-    SZ_TOP = 3.40
-
-    # ゾーン背景
-    fig.add_shape(type="rect",
-        x0=-SZ_X, x1=SZ_X, y0=SZ_BOT, y1=SZ_TOP,
-        line=dict(color="#ffffff", width=2),
-        fillcolor="rgba(255,255,255,0.04)",
-    )
-    # 9分割グリッド
-    for x in [-SZ_X + SZ_X*2/3, SZ_X - SZ_X*2/3]:
-        fig.add_shape(type="line", x0=x, x1=x, y0=SZ_BOT, y1=SZ_TOP,
-                      line=dict(color="rgba(255,255,255,0.27)", width=1))
-    h_step = (SZ_TOP - SZ_BOT) / 3
-    for y in [SZ_BOT + h_step, SZ_BOT + h_step*2]:
-        fig.add_shape(type="line", x0=-SZ_X, x1=SZ_X, y0=y, y1=y,
-                      line=dict(color="rgba(255,255,255,0.27)", width=1))
-
-    # ホームプレート（五角形）
-    plate_y = 0.3
-    px_pts = [-0.708, 0.708, 0.708, 0, -0.708]
-    py_pts = [plate_y, plate_y, plate_y*0.4, 0, plate_y*0.4]
-    fig.add_shape(type="path",
-        path=f"M {px_pts[0]},{py_pts[0]} L {px_pts[1]},{py_pts[1]} L {px_pts[2]},{py_pts[2]} L {px_pts[3]},{py_pts[3]} L {px_pts[4]},{py_pts[4]} Z",
-        fillcolor="rgba(255,255,255,0.15)",
-        line=dict(color="#aaaaaa", width=1),
-    )
-
-    # 球種ごとにトレース追加
-    plotted = 0
-    for pt, color in PITCH_COLORS.items():
-        sub = pitch_df[pitch_df["pitch_type"] == pt].copy()
-        if sub.empty:
-            continue
-        sub = sub.dropna(subset=["plate_x", "plate_z"])
-        if sub.empty:
-            continue
-
-        label_jp = PITCH_LABELS.get(pt, pt)
-        hover_texts = []
-        for _, r in sub.iterrows():
-            velo = f"{r['release_speed']:.1f} mph" if pd.notna(r.get("release_speed")) else "---"
-            desc = DESC_LABELS.get(r.get("description", ""), r.get("description", ""))
-            ev = r.get("events", "")
-            ev_str = f" ({ev})" if pd.notna(ev) and ev else ""
-            dt = r["game_date"].strftime("%m/%d") if pd.notna(r.get("game_date")) else ""
-            hover_texts.append(
-                f"<b>{pt} {label_jp}</b><br>"
-                f"球速: {velo}<br>"
-                f"結果: {desc}{ev_str}<br>"
-                f"日付: {dt}"
-            )
-
-        symbols = [DESC_SYMBOLS.get(d, "circle") for d in sub.get("description", [])]
-
-        fig.add_trace(go.Scatter(
-            x=sub["plate_x"],
-            y=sub["plate_z"],
-            mode="markers",
-            name=f"{pt} {label_jp}",
-            marker=dict(
-                color=color,
-                size=10,
-                symbol=symbols,
-                line=dict(color="#000000", width=0.5),
-                opacity=0.85,
-            ),
-            text=hover_texts,
-            hovertemplate="%{text}<extra></extra>",
-        ))
-        plotted += len(sub)
-
-    # レイアウト
-    # 大谷は左打者なので: 右側（+x）が内角、左側（-x）が外角（投手視点から見た場合）
-    fig.update_layout(
-        title=dict(text=title, font=dict(size=13, color="#cccccc"), x=0.5),
-        paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(13,26,42,0.8)",
-        xaxis=dict(
-            range=[-1.8, 1.8],
-            tickfont=dict(color="#888"),
-            gridcolor="#1a2535",
-            zeroline=False,
-            title=dict(text="← 外角　　　　内角 →", font=dict(color="#888", size=11)),
-        ),
-        yaxis=dict(
-            range=[0, 5],
-            tickfont=dict(color="#888"),
-            gridcolor="#1a2535",
-            zeroline=False,
-            title=dict(text="高さ (ft)", font=dict(color="#888", size=11)),
-        ),
-        legend=dict(
-            font=dict(color="#ccc", size=11),
-            bgcolor="rgba(0,0,0,0)",
-            orientation="h",
-            yanchor="bottom", y=1.02,
-            xanchor="left", x=0,
-        ),
-        margin=dict(l=10, r=10, t=60, b=40),
-        height=430,
-        hoverlabel=dict(bgcolor="#1a2535", font_color="#ffffff"),
-    )
-
-    return fig
-
-# ─── メイン UI ─────────────────────────────────────────────
+# ══════════════════════════════════════════════════════════
+# メイン UI
+# ══════════════════════════════════════════════════════════
 st.markdown("## ⚾ 大谷翔平 対戦予想")
 st.caption("Shohei Ohtani Matchup Predictor")
 
@@ -289,8 +384,9 @@ for _, row in future_sched.iterrows():
 
 selected_idx = st.selectbox("試合を選択", range(len(game_dates)),
                              format_func=lambda i: game_labels[i], index=0)
-selected_date = game_dates[selected_idx]
-selected_game = future_sched.iloc[selected_idx]
+selected_date  = game_dates[selected_idx]
+selected_game  = future_sched.iloc[selected_idx]
+selected_gamepk = int(selected_game["game_pk"]) if pd.notna(selected_game.get("game_pk")) else None
 
 ha_emoji = "🏠 HOME" if selected_game["home_away"] == "home" else "✈ AWAY"
 st.markdown(f"""
@@ -309,15 +405,13 @@ with st.spinner("予測計算中..."):
         st.error(f"予測エラー: {e}")
         st.stop()
 
-# ══════════════════════════════════════════════════════════
-# ① 大谷（打者）予測
-# ══════════════════════════════════════════════════════════
+# ── ① 大谷（打者）予測 ────────────────────────────────────
 st.markdown('<div class="section-header">🥊 大谷（打者）予測</div>', unsafe_allow_html=True)
 
-batter_out = output.get("ohtani_batter", {})
+batter_out  = output.get("ohtani_batter", {})
 batter_pred = batter_out.get("prediction") or {}
-method = batter_out.get("method", "")
-note = batter_out.get("note", "")
+method      = batter_out.get("method", "")
+note        = batter_out.get("note", "")
 
 method_label = {
     "direct_history": "✅ 直接対面実績",
@@ -330,7 +424,7 @@ st.markdown(f'<span class="method-badge">{method_label} — {note}</span>', unsa
 if method == "insufficient_data" or not batter_pred:
     st.markdown('<div class="warn-box">相手投手データが不足しています。collect_opponents.py を実行後、再読み込みしてください。</div>', unsafe_allow_html=True)
 else:
-    woba_val = batter_pred.get("woba")
+    woba_val  = batter_pred.get("woba")
     xwoba_val = batter_pred.get("xwoba")
     grade_label, grade_color = grade(xwoba_val or woba_val)
 
@@ -343,81 +437,119 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
-    with col1:
-        st.metric("wOBA", fmt(woba_val), help=METRIC_HELP["wOBA"])
-    with col2:
-        st.metric("xwOBA", fmt(xwoba_val), help=METRIC_HELP["xwOBA"])
-    with col3:
-        st.metric("xBA", fmt(batter_pred.get("xba")), help=METRIC_HELP["xBA"])
+    c1, c2, c3 = st.columns(3)
+    with c1: st.metric("wOBA",   fmt(woba_val),              help=METRIC_HELP["wOBA"])
+    with c2: st.metric("xwOBA",  fmt(xwoba_val),             help=METRIC_HELP["xwOBA"])
+    with c3: st.metric("xBA",    fmt(batter_pred.get("xba")), help=METRIC_HELP["xBA"])
 
-    col4, col5, col6 = st.columns(3)
-    with col4:
-        st.metric("K率", pct(batter_pred.get("k_rate")), help=METRIC_HELP["K率"])
-    with col5:
-        st.metric("BB率", pct(batter_pred.get("bb_rate")), help=METRIC_HELP["BB率"])
-    with col6:
-        st.metric("空振り率", pct(batter_pred.get("whiff_rate")), help=METRIC_HELP["空振り率"])
+    c4, c5, c6 = st.columns(3)
+    with c4: st.metric("K率",    pct(batter_pred.get("k_rate")),    help=METRIC_HELP["K率"])
+    with c5: st.metric("BB率",   pct(batter_pred.get("bb_rate")),   help=METRIC_HELP["BB率"])
+    with c6: st.metric("空振り率", pct(batter_pred.get("whiff_rate")), help=METRIC_HELP["空振り率"])
 
     if method == "similarity_weighted":
         n_sim = batter_pred.get("n_similar", 0)
         with st.expander(f"参照した類似投手 ({n_sim} 人)"):
-            st.caption(f"{batter_out.get('opponent_pitcher','')} の球種特性に近い、大谷が過去に対戦した投手をもとに算出")
-            sim_ids = batter_pred.get("similar_pitcher_ids", [])
-            if sim_ids:
-                st.code(", ".join(str(x) for x in sim_ids[:10]))
+            st.caption(f"{batter_out.get('opponent_pitcher','')} の球種特性に近い投手をもとに算出")
+            ids = batter_pred.get("similar_pitcher_ids", [])
+            if ids:
+                st.code(", ".join(str(x) for x in ids[:10]))
 
 st.divider()
 
-# ══════════════════════════════════════════════════════════
-# ② 球コース図
-# ══════════════════════════════════════════════════════════
-st.markdown('<div class="section-header">🎯 大谷（打者）球コース図</div>', unsafe_allow_html=True)
+# ── ② 球コース図 ──────────────────────────────────────────
+st.markdown('<div class="section-header">🎯 球コース図（大谷打席）</div>', unsafe_allow_html=True)
 
-ohtani_batter_df = load_ohtani_batter_cached()
-opp_pitcher_id = output.get("ohtani_batter", {}).get("opponent_pitcher_id")
-pitcher_name = output.get("ohtani_batter", {}).get("opponent_pitcher", "")
+ohtani_batter_df  = load_ohtani_batter_cached()
+opp_pitcher_id    = output.get("ohtani_batter", {}).get("opponent_pitcher_id")
+pitcher_name      = output.get("ohtani_batter", {}).get("opponent_pitcher", "")
 
-if not ohtani_batter_df.empty:
-    if opp_pitcher_id:
-        direct_df = ohtani_batter_df[ohtani_batter_df["pitcher"] == int(opp_pitcher_id)]
-    else:
-        direct_df = pd.DataFrame()
+# 凡例説明
+with st.expander("色の見方"):
+    cols = st.columns(3)
+    legend_items = [
+        ("ボール", "#43a047"), ("見逃し", "#e53935"), ("空振り", "#fb8c00"),
+        ("ファウル", "#fdd835"), ("インプレー", "#1e88e5"),
+    ]
+    for i, (label, color) in enumerate(legend_items):
+        with cols[i % 3]:
+            st.markdown(
+                f'<span style="display:inline-block;width:14px;height:14px;border-radius:50%;'
+                f'background:{color};margin-right:6px;vertical-align:middle"></span>{label}',
+                unsafe_allow_html=True
+            )
 
-    has_direct = len(direct_df) >= 5
+# タブ構成
+tab_labels = []
+if opp_pitcher_id and not ohtani_batter_df.empty:
+    direct_df = ohtani_batter_df[ohtani_batter_df["pitcher"] == int(opp_pitcher_id)]
+    if len(direct_df) >= 3:
+        tab_labels.append(f"🕰 過去 vs {pitcher_name}（{len(direct_df)}球）")
+tab_labels.append("🕰 直近5試合")
+tab_labels.append("⚡ 今試合 LIVE")
 
-    # タブ: 直接対面 / 直近5試合
-    tabs_labels = []
-    if has_direct:
-        tabs_labels.append(f"vs {pitcher_name}（全{len(direct_df)}球）")
-    tabs_labels.append("直近5試合")
-    tabs = st.tabs(tabs_labels)
+tabs = st.tabs(tab_labels)
+tab_idx = 0
 
-    tab_idx = 0
-    if has_direct:
-        with tabs[tab_idx]:
-            fig = build_pitch_zone_fig(direct_df, f"大谷 vs {pitcher_name} — 全対戦球")
-            st.plotly_chart(fig, use_container_width=True)
-            st.caption("○ ボール　× 見逃し　× 空振り（×open）　▲ ファウル　★ インプレー")
-        tab_idx += 1
-
+# 過去 vs 相手投手
+if len(tab_labels) == 3:
     with tabs[tab_idx]:
+        fig = build_zone_fig_history(direct_df, f"過去 大谷 vs {pitcher_name}")
+        st.plotly_chart(fig, use_container_width=True)
+    tab_idx += 1
+
+# 直近5試合
+with tabs[tab_idx]:
+    if not ohtani_batter_df.empty:
         recent_dates = sorted(ohtani_batter_df["game_date"].dt.date.unique())[-5:]
-        recent_df = ohtani_batter_df[ohtani_batter_df["game_date"].dt.date.isin(recent_dates)]
-        fig2 = build_pitch_zone_fig(recent_df, f"大谷 直近5試合 — {len(recent_df)}球")
+        recent_df    = ohtani_batter_df[ohtani_batter_df["game_date"].dt.date.isin(recent_dates)]
+        fig2 = build_zone_fig_history(recent_df, f"大谷 直近5試合 ({len(recent_df)}球)")
         st.plotly_chart(fig2, use_container_width=True)
-        st.caption("○ ボール　× 見逃し　×open 空振り　▲ ファウル　★ インプレー")
-else:
-    st.info("打者データが見つかりません。collect_statcast.py を実行してください。")
+    else:
+        st.info("データがありません。")
+tab_idx += 1
+
+# 今試合 LIVE
+with tabs[tab_idx]:
+    if selected_gamepk is None:
+        st.info("今試合の game_pk が不明です。")
+    else:
+        with st.spinner("ライブデータ取得中..."):
+            live_df, game_status = fetch_live_pitches(selected_gamepk)
+
+        status_labels = {
+            "Preview": "⏳ 試合前",
+            "Live":    "🔴 試合中",
+            "Final":   "✅ 試合終了",
+            "Error":   "⚠ 取得エラー",
+        }
+        st.caption(status_labels.get(game_status, game_status))
+
+        if game_status == "Preview":
+            st.info("試合がまだ始まっていません。開始後に自動更新されます。")
+        elif live_df.empty:
+            st.info("大谷の打席データがまだありません。")
+        else:
+            n_ab = live_df["at_bat_number"].nunique()
+            n_p  = len(live_df.dropna(subset=["plate_x", "plate_z"]))
+            fig3 = build_zone_fig_live(
+                live_df,
+                f"今試合 大谷打席 — {n_ab}打席 {n_p}球"
+            )
+            st.plotly_chart(fig3, use_container_width=True)
+            st.caption("● の数字は投球順。球種は hover/タップで確認。")
+
+        if game_status == "Live":
+            if st.button("🔄 LIVE 更新", use_container_width=True):
+                st.cache_data.clear()
+                st.rerun()
 
 st.divider()
 
-# ══════════════════════════════════════════════════════════
-# ③ 大谷（投手）予測
-# ══════════════════════════════════════════════════════════
+# ── ③ 大谷（投手）予測 ────────────────────────────────────
 st.markdown('<div class="section-header">⚾ 大谷（投手）予測</div>', unsafe_allow_html=True)
 
-pitcher_out = output.get("ohtani_pitcher", {})
+pitcher_out    = output.get("ohtani_pitcher", {})
 pitcher_method = pitcher_out.get("method", "")
 
 if not output.get("ohtani_starting_pitcher"):
@@ -440,11 +572,9 @@ else:
     </div>
     """, unsafe_allow_html=True)
 
-    col_a, col_b = st.columns(2)
-    with col_a:
-        st.metric("被 xwOBA", fmt(team_xwoba), help=METRIC_HELP["xwOBA"] + "（低いほど大谷に有利）")
-    with col_b:
-        st.metric("空振り率", pct(team_whiff), help=METRIC_HELP["空振り率"] + "（高いほど大谷に有利）")
+    ca, cb = st.columns(2)
+    with ca: st.metric("被 xwOBA", fmt(team_xwoba), help=METRIC_HELP["xwOBA"] + "（低いほど大谷に有利）")
+    with cb: st.metric("空振り率", pct(team_whiff),  help=METRIC_HELP["空振り率"] + "（高いほど大谷に有利）")
 
     pitch_mix = pitcher_out.get("ohtani_pitch_mix", {})
     if pitch_mix:
