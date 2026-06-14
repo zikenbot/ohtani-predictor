@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+.pybaseball/
+pybaseball_cache/
+*.log
+collect_log.txt
+collect_pitchers_log.txt
+collect_batters_log.txt
+data/statcast/collect_log.txt
+data/opponents/collect_pitchers_log.txt
+data/opponents/collect_batters_log.txt
+.env
