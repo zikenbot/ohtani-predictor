@@ -172,24 +172,31 @@ def _add_zone_shapes(fig: go.Figure) -> None:
     )
 
 def _zone_layout(title: str) -> dict:
+    # x: -1.5〜1.5 (3 ft)、y: 0.3〜4.3 (4 ft) → データ空間 3:4 でゾーンの縦横比が正確になる
     return dict(
         title=dict(text=title, font=dict(size=13, color="#ccc"), x=0.5),
         paper_bgcolor="rgba(0,0,0,0)",
-        plot_bgcolor="rgba(15,50,15,1)",          # ダークグリーン（フィールド風）
+        plot_bgcolor="rgba(15,50,15,1)",
         xaxis=dict(
-            range=[-2.0, 2.0], tickfont=dict(color="#aaa"), gridcolor="rgba(255,255,255,0.05)",
+            range=[-1.5, 1.5],
+            tickfont=dict(color="#aaa"),
+            gridcolor="rgba(255,255,255,0.05)",
             zeroline=False,
             title=dict(text="← 外角（大谷左打ち）　内角 →", font=dict(color="#aaa", size=11)),
         ),
         yaxis=dict(
-            range=[0, 5], tickfont=dict(color="#aaa"), gridcolor="rgba(255,255,255,0.05)",
+            range=[0.3, 4.3],
+            tickfont=dict(color="#aaa"),
+            gridcolor="rgba(255,255,255,0.05)",
             zeroline=False,
             title=dict(text="高さ (ft)", font=dict(color="#aaa", size=11)),
+            scaleanchor="x",   # x と等尺にしてゾーンの縦横比を正確に保つ
+            scaleratio=1,
         ),
         legend=dict(font=dict(color="#ccc", size=11), bgcolor="rgba(0,0,0,0)",
                     orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0),
         margin=dict(l=10, r=10, t=60, b=40),
-        height=430,
+        height=500,
         hoverlabel=dict(bgcolor="#1a2535", font_color="#fff", font_size=13),
     )
 
