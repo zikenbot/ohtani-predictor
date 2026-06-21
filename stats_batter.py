@@ -24,6 +24,12 @@ from model_batter_profile import (
 )
 
 MIN_PA = 10  # 集計表示に必要な最低打席数（少数サンプルはデータ不足として隠す）
+MIN_PITCHERS = 2  # 投手タイプ集計に必要な最低投手数
+
+# 投手タイプ分類用の球種グループ
+FASTBALL_TYPES  = {"FF", "SI", "FC"}
+BREAKING_TYPES  = {"SL", "ST", "CU", "KC", "SV", "CS"}
+OFFSPEED_TYPES  = {"CH", "FS"}
 
 COUNT_GROUP_MAP = {
     "1-0": "先行", "2-0": "先行", "3-0": "先行", "2-1": "先行", "3-1": "先行",
@@ -232,3 +238,120 @@ def compute_count_split(df: pd.DataFrame) -> pd.DataFrame:
             continue
         rows.append({"count_group": label, **stats})
     return pd.DataFrame(rows)
+
+
+def compute_pitcher_type_split(df: pd.DataFrame) -> dict:
+    """
+    投手タイプ別（左右・球速帯・球種構成）の対大谷xwOBAを集計し、
+    得意・苦手カテゴリを判定して返す。
+
+    戻り値:
+      top_good        : 全体比 +0.040 以上のカテゴリ（得意）
+      top_bad         : 全体比 -0.040 以下のカテゴリ（苦手）
+      all_categories  : 全カテゴリを xwOBA 降順で並べたリスト
+      overall_xwoba   : 分析対象投手全体の平均 xwOBA
+      n_pitchers      : 対象投手数
+    """
+    if df.empty or "pitcher" not in df.columns:
+        return {}
+
+    # ── 投手ごとに大谷の打撃成績を計算 ──────────────────
+    rows = []
+    for pid, sub in df.groupby("pitcher"):
+        terminal = sub[sub["events"].notna() & (sub["woba_denom"].fillna(0) > 0)]
+        n_pa = len(terminal)
+        if n_pa < 3:
+            continue
+
+        xwoba_s = terminal["estimated_woba_using_speedangle"].dropna()
+        xwoba = float(xwoba_s.mean()) if len(xwoba_s) else None
+
+        throws = sub["p_throws"].dropna().mode() if "p_throws" in sub.columns else pd.Series([], dtype=str)
+        p_throws = throws.iloc[0] if len(throws) else None
+
+        n_total = len(sub)
+        fb_mask = sub["pitch_type"].isin(FASTBALL_TYPES)
+        fb_velo = sub.loc[fb_mask, "release_speed"]
+        avg_velo_val = fb_velo.mean() if not fb_velo.empty else sub["release_speed"].mean()
+
+        rows.append({
+            "pitcher": pid,
+            "p_throws": p_throws,
+            "n_pa": n_pa,
+            "xwoba": xwoba,
+            "avg_velo": float(avg_velo_val) if pd.notna(avg_velo_val) else None,
+            "fb_pct": fb_mask.sum() / n_total,
+            "br_pct": sub["pitch_type"].isin(BREAKING_TYPES).sum() / n_total,
+            "os_pct": sub["pitch_type"].isin(OFFSPEED_TYPES).sum() / n_total,
+        })
+
+    if len(rows) < 3:
+        return {}
+
+    pdf = pd.DataFrame(rows)
+    overall_xwoba = float(pdf["xwoba"].dropna().mean())
+
+    # ── 投手タイプ分類 ────────────────────────────────
+    def velo_tier(v):
+        if v is None or pd.isna(v): return None
+        if v >= 95: return "速球派 (≥95mph)"
+        if v >= 91: return "中速 (91-94mph)"
+        return "軟投派 (<91mph)"
+
+    def arsenal_type(row):
+        if row["fb_pct"] >= 0.55: return "速球主体"
+        if row["br_pct"] >= 0.40: return "変化球主体"
+        if row["os_pct"] >= 0.20: return "軟投系"
+        return "バランス型"
+
+    pdf["velo_tier"] = pdf["avg_velo"].map(velo_tier)
+    pdf["arsenal"]   = pdf.apply(arsenal_type, axis=1)
+
+    def _agg(sub_df, label):
+        xw = sub_df["xwoba"].dropna()
+        if len(sub_df) < MIN_PITCHERS or len(xw) == 0:
+            return None
+        return {"label": label, "n": len(sub_df), "xwoba": round(float(xw.mean()), 3)}
+
+    categories = []
+    # 左右
+    for hand, label in [("R", "右投手"), ("L", "左投手")]:
+        r = _agg(pdf[pdf["p_throws"] == hand], label)
+        if r: categories.append(r)
+    # 球速帯
+    for tier in ["速球派 (≥95mph)", "中速 (91-94mph)", "軟投派 (<91mph)"]:
+        r = _agg(pdf[pdf["velo_tier"] == tier], tier)
+        if r: categories.append(r)
+    # 球種構成
+    for atype in ["速球主体", "バランス型", "変化球主体", "軟投系"]:
+        r = _agg(pdf[pdf["arsenal"] == atype], atype)
+        if r: categories.append(r)
+    # 左右 × 球速帯（詳細）
+    for hand, hlabel in [("R", "右"), ("L", "左")]:
+        for tier, tlabel in [
+            ("速球派 (≥95mph)", "速球派"),
+            ("中速 (91-94mph)", "中速"),
+            ("軟投派 (<91mph)", "軟投派"),
+        ]:
+            r = _agg(
+                pdf[(pdf["p_throws"] == hand) & (pdf["velo_tier"] == tier)],
+                f"{hlabel}投手・{tlabel}",
+            )
+            if r: categories.append(r)
+
+    categories.sort(key=lambda x: -x["xwoba"])
+
+    thresh = 0.040
+    top_good = [c for c in categories if c["xwoba"] >= overall_xwoba + thresh][:4]
+    top_bad  = sorted(
+        [c for c in categories if c["xwoba"] <= overall_xwoba - thresh],
+        key=lambda x: x["xwoba"],
+    )[:4]
+
+    return {
+        "top_good": top_good,
+        "top_bad": top_bad,
+        "all_categories": categories,
+        "overall_xwoba": round(overall_xwoba, 3),
+        "n_pitchers": len(pdf),
+    }

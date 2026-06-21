@@ -19,6 +19,7 @@ from predict import run_prediction, _load_schedule
 from stats_batter import (
     compute_summary, compute_zone_grid, compute_pitch_split,
     compute_ev_stats, compute_monthly_trend, compute_lr_split, compute_count_split,
+    compute_pitcher_type_split,
 )
 
 DATA_DIR = Path(__file__).parent / "data"
@@ -811,6 +812,75 @@ with tab_stats:
             with s6: st.metric("バレル率", pct(summary.get("barrel_rate")), help=METRIC_HELP["バレル率"])
             with s7: st.metric("ハードヒット率", pct(summary.get("hard_hit_rate")), help=METRIC_HELP["ハードヒット率"])
             with s8: st.metric("平均EV", f"{summary.get('avg_ev')} mph" if summary.get("avg_ev") is not None else "---")
+
+            st.divider()
+
+            # ── 得意・苦手な投手タイプ 要約 ──────────────────────
+            st.markdown('<div class="section-header">🔍 得意・苦手な投手タイプ</div>', unsafe_allow_html=True)
+            pt_split = compute_pitcher_type_split(season_df)
+            if not pt_split:
+                st.info("データが不足しています。")
+            else:
+                st.caption(
+                    f"分析対象: {pt_split['n_pitchers']} 投手 ／ "
+                    f"全体 xwOBA: {pt_split['overall_xwoba']:.3f}　"
+                    f"（全体比 ±0.040 以上で得意・苦手と判定）"
+                )
+                good_list = pt_split["top_good"]
+                bad_list  = pt_split["top_bad"]
+
+                g_col, b_col = st.columns(2)
+                with g_col:
+                    st.markdown("##### ✅ 得意な投手タイプ")
+                    if not good_list:
+                        st.caption("該当なし（全体平均と大きな差なし）")
+                    for item in good_list:
+                        diff = item["xwoba"] - pt_split["overall_xwoba"]
+                        st.markdown(f"""
+<div style="background:#0a2818;border:1px solid #27ae60;border-radius:8px;
+            padding:10px 14px;margin:4px 0;display:flex;justify-content:space-between;align-items:center">
+  <div>
+    <span style="color:#2ecc71;font-weight:700;font-size:0.95rem">{item['label']}</span><br>
+    <span style="color:#668866;font-size:0.75rem">{item['n']} 投手</span>
+  </div>
+  <div style="text-align:right">
+    <span style="color:#fff;font-weight:800;font-size:1.1rem">xwOBA {item['xwoba']:.3f}</span><br>
+    <span style="color:#2ecc71;font-size:0.78rem">全体比 +{diff:.3f}</span>
+  </div>
+</div>""", unsafe_allow_html=True)
+
+                with b_col:
+                    st.markdown("##### ❌ 苦手な投手タイプ")
+                    if not bad_list:
+                        st.caption("該当なし（全体平均と大きな差なし）")
+                    for item in bad_list:
+                        diff = item["xwoba"] - pt_split["overall_xwoba"]
+                        st.markdown(f"""
+<div style="background:#280a0a;border:1px solid #e74c3c;border-radius:8px;
+            padding:10px 14px;margin:4px 0;display:flex;justify-content:space-between;align-items:center">
+  <div>
+    <span style="color:#e74c3c;font-weight:700;font-size:0.95rem">{item['label']}</span><br>
+    <span style="color:#886666;font-size:0.75rem">{item['n']} 投手</span>
+  </div>
+  <div style="text-align:right">
+    <span style="color:#fff;font-weight:800;font-size:1.1rem">xwOBA {item['xwoba']:.3f}</span><br>
+    <span style="color:#e74c3c;font-size:0.78rem">全体比 {diff:.3f}</span>
+  </div>
+</div>""", unsafe_allow_html=True)
+
+                with st.expander("全カテゴリ一覧"):
+                    all_df = pd.DataFrame(pt_split["all_categories"])
+                    thresh = 0.040
+                    all_df["評価"] = all_df["xwoba"].map(
+                        lambda v: "✅ 得意" if v >= pt_split["overall_xwoba"] + thresh
+                        else ("❌ 苦手" if v <= pt_split["overall_xwoba"] - thresh else "— 普通")
+                    )
+                    st.dataframe(
+                        all_df.rename(columns={"label": "投手タイプ", "n": "投手数", "xwoba": "xwOBA"})[
+                            ["投手タイプ", "投手数", "xwOBA", "評価"]
+                        ],
+                        hide_index=True, use_container_width=True,
+                    )
 
             st.divider()
 
