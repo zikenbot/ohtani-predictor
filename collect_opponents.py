@@ -7,6 +7,7 @@
 """
 
 import argparse
+from datetime import datetime
 from pathlib import Path
 
 import pandas as pd
@@ -156,7 +157,7 @@ def summarize() -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="対戦相手データ収集")
-    parser.add_argument("--year", type=int, default=2025)
+    parser.add_argument("--year", type=int, default=datetime.today().year)
     parser.add_argument("--pitcher-only", action="store_true")
     parser.add_argument("--batter-only", action="store_true")
     parser.add_argument("--force", action="store_true")
