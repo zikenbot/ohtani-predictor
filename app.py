@@ -402,16 +402,24 @@ BB_TYPE_LABELS = {
 
 def build_ev_scatter_fig(ev_df: pd.DataFrame) -> go.Figure:
     fig = go.Figure()
-    for bb, color in BB_TYPE_COLORS.items():
-        sub = ev_df[ev_df["bb_type"] == bb]
-        if sub.empty:
-            continue
+    if "bb_type" not in ev_df.columns:
         fig.add_trace(go.Scatter(
-            x=sub["launch_angle"], y=sub["launch_speed"],
-            mode="markers", name=BB_TYPE_LABELS.get(bb, bb),
-            marker=dict(color=color, size=7, opacity=0.65),
+            x=ev_df["launch_angle"], y=ev_df["launch_speed"],
+            mode="markers", name="打球",
+            marker=dict(color="#0078ff", size=7, opacity=0.65),
             hovertemplate="角度 %{x:.0f}°　速度 %{y:.1f} mph<extra></extra>",
         ))
+    else:
+        for bb, color in BB_TYPE_COLORS.items():
+            sub = ev_df[ev_df["bb_type"] == bb]
+            if sub.empty:
+                continue
+            fig.add_trace(go.Scatter(
+                x=sub["launch_angle"], y=sub["launch_speed"],
+                mode="markers", name=BB_TYPE_LABELS.get(bb, bb),
+                marker=dict(color=color, size=7, opacity=0.65),
+                hovertemplate="角度 %{x:.0f}°　速度 %{y:.1f} mph<extra></extra>",
+            ))
     fig.update_layout(
         paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(20,25,35,1)",
         xaxis=dict(title=dict(text="打球角度 (°)", font=dict(color="#aaa", size=11)),
