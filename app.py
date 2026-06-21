@@ -549,6 +549,26 @@ def load_schedule_cached():
 def run_prediction_cached(game_date_str):
     return run_prediction(game_date=game_date_str)
 
+@st.cache_data(ttl=60, show_spinner=False)
+def get_dodgers_live_game_pk() -> int | None:
+    """現在進行中の Dodgers 試合の game_pk を返す。なければ None。"""
+    from datetime import date, timedelta
+    for d in [date.today(), date.today() - timedelta(days=1)]:
+        try:
+            r = requests.get(
+                "https://statsapi.mlb.com/api/v1/schedule",
+                params={"teamId": 119, "date": d.isoformat(),
+                        "sportId": 1, "hydrate": "game(status)"},
+                timeout=5,
+            )
+            for date_entry in r.json().get("dates", []):
+                for g in date_entry.get("games", []):
+                    if g.get("status", {}).get("abstractGameState") == "Live":
+                        return g.get("gamePk")
+        except Exception:
+            pass
+    return None
+
 @st.cache_data(ttl=3600, show_spinner=False)
 def load_ohtani_batter_cached():
     files = sorted((DATA_DIR / "statcast").glob("ohtani_batter_*.parquet"))
@@ -577,7 +597,9 @@ with tab_pred:
 
     schedule["game_date"] = pd.to_datetime(schedule["game_date"])
     today = pd.Timestamp("today").normalize()
-    future_sched = schedule[schedule["game_date"] >= today].sort_values("game_date")
+    # 前日から表示: UTC深夜をまたぐ進行中試合（米国夜間）にも対応
+    cutoff = today - pd.Timedelta(days=1)
+    future_sched = schedule[schedule["game_date"] >= cutoff].sort_values("game_date")
 
     if future_sched.empty:
         st.warning("今後の試合がスケジュールに見つかりません。")
@@ -590,8 +612,21 @@ with tab_pred:
         flag = " ⚡先発" if row.get("ohtani_starting_pitcher") else ""
         game_labels.append(f"{row['game_date'].strftime('%m/%d')} {ha} vs {row['opponent_team']}{flag}")
 
+    # デフォルト選択: 進行中試合 > 今日以降の最初の試合 の優先順で決定
+    live_pk = get_dodgers_live_game_pk()
+    default_idx = 0
+    found_today = False
+    for i, (_, row) in enumerate(future_sched.iterrows()):
+        gk = row.get("game_pk")
+        if live_pk and pd.notna(gk) and int(gk) == live_pk:
+            default_idx = i
+            break
+        if not found_today and row["game_date"].normalize() >= today:
+            default_idx = i
+            found_today = True
+
     selected_idx = st.selectbox("試合を選択", range(len(game_dates)),
-                                 format_func=lambda i: game_labels[i], index=0)
+                                 format_func=lambda i: game_labels[i], index=default_idx)
     selected_date  = game_dates[selected_idx]
     selected_game  = future_sched.iloc[selected_idx]
     selected_gamepk = int(selected_game["game_pk"]) if pd.notna(selected_game.get("game_pk")) else None
