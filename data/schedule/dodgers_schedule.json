@@ -2,7 +2,7 @@
   {
     "game_date": "2026-06-21",
     "game_pk": 823934,
-    "status": "Preview",
+    "status": "Live",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
     "away_team": "Baltimore Orioles",
@@ -23,10 +23,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Minnesota Twins",
     "opponent_team_id": 142,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 805673,
+    "opp_starter_name": "Zebby Matthews",
+    "dodgers_starter_id": 641778,
+    "dodgers_starter_name": "Eric Lauer",
     "ohtani_starting_pitcher": false
   },
   {
@@ -38,10 +38,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Minnesota Twins",
     "opponent_team_id": 142,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 657746,
+    "opp_starter_name": "Joe Ryan",
+    "dodgers_starter_id": 680736,
+    "dodgers_starter_name": "Justin Wrobleski",
     "ohtani_starting_pitcher": false
   },
   {
@@ -53,11 +53,11 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Minnesota Twins",
     "opponent_team_id": 142,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
-    "ohtani_starting_pitcher": false
+    "opp_starter_id": 687570,
+    "opp_starter_name": "Connor Prielipp",
+    "dodgers_starter_id": 660271,
+    "dodgers_starter_name": "Shohei Ohtani",
+    "ohtani_starting_pitcher": true
   },
   {
     "game_date": "2026-06-26",
