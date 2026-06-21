@@ -1,0 +1,38 @@
+name: Update schedule and pitcher data
+
+on:
+  schedule:
+    - cron: '0 21 * * *'   # 毎日 06:00 JST (前日21:00 UTC)
+  workflow_dispatch:        # GitHub UI から手動実行も可能
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # コミット・プッシュに必要
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: pip install pybaseball pandas pyarrow requests
+
+      - name: Update schedule
+        run: python collect_schedule.py --days 30
+
+      - name: Fetch pitcher data
+        run: python collect_opponents.py --pitcher-only
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/schedule/ data/opponents/pitcher_*.parquet
+          git diff --staged --quiet && echo "変更なし" || (
+            git commit -m "Auto-update: schedule and pitcher data $(date -u +'%Y-%m-%d')"
+            git push
+          )
