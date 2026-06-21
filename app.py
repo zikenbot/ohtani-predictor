@@ -112,6 +112,23 @@ MLB_DESC_MAP = {
     "automatic ball": "ball", "automatic strike": "called_strike",
     "hit by pitch": "ball",
 }
+PITCHER_TYPE_TIPS = {
+    "右投手":          "右腕の投手。大谷（左打ち）には外角から変化球が曲がってくる配球が基本。対大谷での登板機会が最も多い",
+    "左投手":          "左腕投手（サウスポー）。大谷（左打ち）と同腕のため球の軌道が見極めにくく、一般に左打者は苦手とすることが多い",
+    "速球派 (≥95mph)": "直球系（フォーシーム・シンカー）の平均球速が95mph以上。ストレートで押すパワーピッチャー",
+    "中速 (91-94mph)": "直球系の平均球速が91〜94mph。速球と変化球をバランスよく配球する典型的なMLB先発タイプ",
+    "軟投派 (<91mph)": "直球系の平均球速が91mph未満。球速より制球・緩急・変化量で打者のタイミングを外すタイプ",
+    "速球主体":        "フォーシーム・シンカー・カッターなど直球系が投球全体の55%以上を占める速球投手",
+    "バランス型":      "速球・変化球・軟投系をバランスよく配球。どの球種にも極端な偏りがなく予測しにくいタイプ",
+    "変化球主体":      "スライダー・スイーパー・カーブなど横・縦に変化する球が投球全体の40%以上を占める",
+    "軟投系":          "チェンジアップ・スプリットなど軟投系球種が投球全体の20%以上。速球との緩急で打者のタイミングを外す",
+    "右投手・速球派":  "右腕 かつ 直球系平均球速95mph以上のパワーピッチャー",
+    "右投手・中速":    "右腕 かつ 直球系平均球速91〜94mph",
+    "右投手・軟投派":  "右腕 かつ 直球系平均球速91mph未満の軟投投手",
+    "左投手・速球派":  "左腕 かつ 直球系平均球速95mph以上のパワーサウスポー",
+    "左投手・中速":    "左腕 かつ 直球系平均球速91〜94mph",
+    "左投手・軟投派":  "左腕 かつ 直球系平均球速91mph未満の軟投サウスポー",
+}
 METRIC_HELP = {
     "wOBA":  "加重出塁率（Weighted On-Base Average）。打席結果に打点価値の重みをつけた指標。リーグ平均は約0.320。高いほど優秀。",
     "xwOBA": "期待加重出塁率。打球の速度・角度から計算した「本来の」wOBA。守備の運不運を除いた真の打力を示す。",
@@ -836,9 +853,11 @@ with tab_stats:
                         st.caption("該当なし（全体平均と大きな差なし）")
                     for item in good_list:
                         diff = item["xwoba"] - pt_split["overall_xwoba"]
+                        tip = PITCHER_TYPE_TIPS.get(item["label"], "")
                         st.markdown(f"""
-<div style="background:#0a2818;border:1px solid #27ae60;border-radius:8px;
-            padding:10px 14px;margin:4px 0;display:flex;justify-content:space-between;align-items:center">
+<div title="{tip}" style="background:#0a2818;border:1px solid #27ae60;border-radius:8px;
+            padding:10px 14px;margin:4px 0;display:flex;justify-content:space-between;
+            align-items:center;cursor:help">
   <div>
     <span style="color:#2ecc71;font-weight:700;font-size:0.95rem">{item['label']}</span><br>
     <span style="color:#668866;font-size:0.75rem">{item['n']} 投手</span>
@@ -855,9 +874,11 @@ with tab_stats:
                         st.caption("該当なし（全体平均と大きな差なし）")
                     for item in bad_list:
                         diff = item["xwoba"] - pt_split["overall_xwoba"]
+                        tip = PITCHER_TYPE_TIPS.get(item["label"], "")
                         st.markdown(f"""
-<div style="background:#280a0a;border:1px solid #e74c3c;border-radius:8px;
-            padding:10px 14px;margin:4px 0;display:flex;justify-content:space-between;align-items:center">
+<div title="{tip}" style="background:#280a0a;border:1px solid #e74c3c;border-radius:8px;
+            padding:10px 14px;margin:4px 0;display:flex;justify-content:space-between;
+            align-items:center;cursor:help">
   <div>
     <span style="color:#e74c3c;font-weight:700;font-size:0.95rem">{item['label']}</span><br>
     <span style="color:#886666;font-size:0.75rem">{item['n']} 投手</span>
@@ -875,9 +896,12 @@ with tab_stats:
                         lambda v: "✅ 得意" if v >= pt_split["overall_xwoba"] + thresh
                         else ("❌ 苦手" if v <= pt_split["overall_xwoba"] - thresh else "— 普通")
                     )
+                    all_df["定義"] = all_df["label"].map(
+                        lambda l: PITCHER_TYPE_TIPS.get(l, "")
+                    )
                     st.dataframe(
                         all_df.rename(columns={"label": "投手タイプ", "n": "投手数", "xwoba": "xwOBA"})[
-                            ["投手タイプ", "投手数", "xwOBA", "評価"]
+                            ["投手タイプ", "投手数", "xwOBA", "評価", "定義"]
                         ],
                         hide_index=True, use_container_width=True,
                     )
