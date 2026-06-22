@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-06-21",
-    "game_pk": 823934,
-    "status": "Live",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Baltimore Orioles",
-    "opponent_team": "Baltimore Orioles",
-    "opponent_team_id": 110,
-    "opp_starter_id": 687064,
-    "opp_starter_name": "Brandon Young",
-    "dodgers_starter_id": 686218,
-    "dodgers_starter_name": "Emmet Sheehan",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-06-22",
     "game_pk": 823692,
     "status": "Preview",
@@ -362,6 +347,21 @@
   {
     "game_date": "2026-07-21",
     "game_pk": 823437,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Philadelphia Phillies",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Philadelphia Phillies",
+    "opponent_team_id": 143,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-07-22",
+    "game_pk": 823438,
     "status": "Preview",
     "home_away": "away",
     "home_team": "Philadelphia Phillies",
