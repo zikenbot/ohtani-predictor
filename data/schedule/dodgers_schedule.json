@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-06-22",
-    "game_pk": 823692,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Minnesota Twins",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Minnesota Twins",
-    "opponent_team_id": 142,
-    "opp_starter_id": 805673,
-    "opp_starter_name": "Zebby Matthews",
-    "dodgers_starter_id": 641778,
-    "dodgers_starter_name": "Eric Lauer",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-06-23",
     "game_pk": 823690,
     "status": "Preview",
@@ -23,8 +8,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Minnesota Twins",
     "opponent_team_id": 142,
-    "opp_starter_id": 657746,
-    "opp_starter_name": "Joe Ryan",
+    "opp_starter_id": 696070,
+    "opp_starter_name": "Kendry Rojas",
     "dodgers_starter_id": 680736,
     "dodgers_starter_name": "Justin Wrobleski",
     "ohtani_starting_pitcher": false
