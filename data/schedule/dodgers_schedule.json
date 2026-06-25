@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-06-24",
-    "game_pk": 823691,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Minnesota Twins",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Minnesota Twins",
-    "opponent_team_id": 142,
-    "opp_starter_id": 657746,
-    "opp_starter_name": "Joe Ryan",
-    "dodgers_starter_id": 660271,
-    "dodgers_starter_name": "Shohei Ohtani",
-    "ohtani_starting_pitcher": true
-  },
-  {
     "game_date": "2026-06-26",
     "game_pk": 823285,
     "status": "Preview",
@@ -23,10 +8,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "San Diego Padres",
     "opponent_team_id": 135,
-    "opp_starter_id": 681190,
-    "opp_starter_name": "Randy Vásquez",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 621111,
+    "opp_starter_name": "Walker Buehler",
+    "dodgers_starter_id": 808963,
+    "dodgers_starter_name": "Roki Sasaki",
     "ohtani_starting_pitcher": false
   },
   {
@@ -38,10 +23,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "San Diego Padres",
     "opponent_team_id": 135,
-    "opp_starter_id": 621111,
-    "opp_starter_name": "Walker Buehler",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 681190,
+    "opp_starter_name": "Randy Vásquez",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -55,8 +40,8 @@
     "opponent_team_id": 135,
     "opp_starter_id": 650633,
     "opp_starter_name": "Michael King",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 686218,
+    "dodgers_starter_name": "Emmet Sheehan",
     "ohtani_starting_pitcher": false
   },
   {
@@ -347,6 +332,21 @@
   {
     "game_date": "2026-07-24",
     "game_pk": 823601,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "New York Mets",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "New York Mets",
+    "opponent_team_id": 121,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-07-25",
+    "game_pk": 823600,
     "status": "Preview",
     "home_away": "away",
     "home_team": "New York Mets",
