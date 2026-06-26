@@ -358,5 +358,20 @@
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-07-26",
+    "game_pk": 823599,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "New York Mets",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "New York Mets",
+    "opponent_team_id": 121,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
   }
 ]
