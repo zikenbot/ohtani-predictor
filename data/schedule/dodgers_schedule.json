@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-06-28",
-    "game_pk": 823281,
-    "status": "Live",
-    "home_away": "away",
-    "home_team": "San Diego Padres",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "San Diego Padres",
-    "opponent_team_id": 135,
-    "opp_starter_id": 650633,
-    "opp_starter_name": "Michael King",
-    "dodgers_starter_id": 686218,
-    "dodgers_starter_name": "Emmet Sheehan",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-06-29",
     "game_pk": 824986,
     "status": "Preview",
@@ -347,6 +332,21 @@
   {
     "game_date": "2026-07-28",
     "game_pk": 823923,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Seattle Mariners",
+    "opponent_team": "Seattle Mariners",
+    "opponent_team_id": 136,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-07-29",
+    "game_pk": 823924,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
