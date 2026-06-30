@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-06-29",
-    "game_pk": 824986,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Athletics",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Athletics",
-    "opponent_team_id": 133,
-    "opp_starter_id": 695611,
-    "opp_starter_name": "Gage Jump",
-    "dodgers_starter_id": 641778,
-    "dodgers_starter_name": "Eric Lauer",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-06-30",
     "game_pk": 824984,
     "status": "Preview",
@@ -70,9 +55,9 @@
     "opponent_team_id": 135,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
-    "ohtani_starting_pitcher": false
+    "dodgers_starter_id": 660271,
+    "dodgers_starter_name": "Shohei Ohtani",
+    "ohtani_starting_pitcher": true
   },
   {
     "game_date": "2026-07-04",
@@ -347,6 +332,21 @@
   {
     "game_date": "2026-07-29",
     "game_pk": 823924,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Seattle Mariners",
+    "opponent_team": "Seattle Mariners",
+    "opponent_team_id": 136,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-07-30",
+    "game_pk": 823921,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
