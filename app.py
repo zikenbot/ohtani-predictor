@@ -15,7 +15,7 @@ import requests
 import streamlit as st
 
 sys.path.insert(0, str(Path(__file__).parent))
-from predict import run_prediction, _load_schedule
+from predict import run_prediction, _load_schedule, _load_opponent
 from stats_batter import (
     compute_summary, compute_zone_grid, compute_pitch_split,
     compute_ev_stats, compute_monthly_trend, compute_lr_split, compute_count_split,
@@ -158,12 +158,16 @@ def fmt(v, digits=3):
 def pct(v):
     return f"{v*100:.1f}%" if v is not None else "---"
 
-def grade(woba):
-    if woba is None: return "---", "#666"
-    if woba >= 0.400: return "大当たり ◎", "#27ae60"
-    if woba >= 0.350: return "好調 ○", "#2ecc71"
-    if woba >= 0.300: return "普通 △", "#f39c12"
-    return "苦手 ×", "#e74c3c"
+def grade_vs_ohtani(xwoba_val, ohtani_avg):
+    """大谷の過去平均 xwOBA を基準に今日の予測を5段階評価する"""
+    if xwoba_val is None or ohtani_avg is None:
+        return "---", "#666", 0.0
+    diff = xwoba_val - ohtani_avg
+    if diff >=  0.070: return "大当たり ◎", "#27ae60", diff
+    if diff >=  0.025: return "好調 ○",    "#2ecc71", diff
+    if diff >= -0.025: return "普通 △",    "#f39c12", diff
+    if diff >= -0.070: return "苦手 ×",    "#e74c3c", diff
+    return              "大苦手 ××",       "#c0392b", diff
 
 def pitcher_grade(xwoba):
     if xwoba is None: return "---", "#666"
@@ -177,6 +181,103 @@ def pitch_badge(pt, pct_val=None):
     label = PITCH_LABELS.get(pt, pt)
     extra = f" {pct_val*100:.0f}%" if pct_val else ""
     return f'<span class="pitch-badge" style="background:{color}22;color:{color};border:1px solid {color}">{pt} {label}{extra}</span>'
+
+_SW_SET = {"swinging_strike", "swinging_strike_blocked", "foul", "foul_tip", "hit_into_play"}
+_WH_SET = {"swinging_strike", "swinging_strike_blocked"}
+_FB_SET = {"FF", "SI", "FC"}
+_BR_SET = {"SL", "ST", "CU", "KC", "SV", "CS"}
+_OS_SET = {"CH", "FS"}
+
+def build_opponent_pitcher_info(df: pd.DataFrame) -> dict:
+    """相手先発投手の今季 Statcast から投手プロフィールを生成する"""
+    if df is None or df.empty:
+        return {}
+
+    throws = df["p_throws"].dropna().mode()
+    p_throws = throws.iloc[0] if len(throws) else "?"
+
+    terminal = df[df["events"].notna()]
+    n_bf = len(terminal)
+    if n_bf < 5:
+        return {}
+
+    n_k  = (terminal["events"] == "strikeout").sum()
+    n_bb = terminal["events"].isin(["walk", "hit_by_pitch"]).sum()
+
+    sw = df["description"].isin(_SW_SET).sum()
+    wh = df["description"].isin(_WH_SET).sum()
+    overall_whiff = float(wh / sw) if sw > 0 else None
+
+    woba_sub = terminal[terminal["woba_denom"].fillna(0) > 0]
+    xwoba_v = woba_sub["estimated_woba_using_speedangle"].mean()
+    xwoba_against = float(xwoba_v) if pd.notna(xwoba_v) else None
+
+    n_total = len(df)
+    pitch_rows = []
+    for pt, sub in df.groupby("pitch_type"):
+        pt = str(pt)
+        if not pt or pt == "nan":
+            continue
+        usage = len(sub) / n_total
+        if usage < 0.02:
+            continue
+
+        avg_spd  = sub["release_speed"].mean()
+        avg_spin = sub["release_spin_rate"].mean()
+
+        pt_sw = sub["description"].isin(_SW_SET).sum()
+        pt_wh = sub["description"].isin(_WH_SET).sum()
+        pt_whiff = float(pt_wh / pt_sw) if pt_sw > 0 else None
+
+        pt_terminal = sub[sub["events"].notna() & (sub["woba_denom"].fillna(0) > 0)]
+        xba_v = pt_terminal["estimated_ba_using_speedangle"].mean()
+
+        pitch_rows.append({
+            "pitch_type": pt,
+            "usage_pct":  round(usage, 3),
+            "avg_speed":  round(float(avg_spd), 1) if pd.notna(avg_spd) else None,
+            "avg_spin":   int(round(float(avg_spin))) if pd.notna(avg_spin) else None,
+            "xba":        round(float(xba_v), 3) if pd.notna(xba_v) else None,
+            "whiff_rate": round(pt_whiff, 3) if pt_whiff is not None else None,
+        })
+
+    pitch_rows.sort(key=lambda x: -x["usage_pct"])
+
+    fb_pct = sum(r["usage_pct"] for r in pitch_rows if r["pitch_type"] in _FB_SET)
+    br_pct = sum(r["usage_pct"] for r in pitch_rows if r["pitch_type"] in _BR_SET)
+    os_pct = sum(r["usage_pct"] for r in pitch_rows if r["pitch_type"] in _OS_SET)
+
+    fb_rows = [r for r in pitch_rows if r["pitch_type"] in _FB_SET]
+    avg_velo = fb_rows[0]["avg_speed"] if fb_rows else (pitch_rows[0]["avg_speed"] if pitch_rows else None)
+
+    if fb_pct >= 0.55:   style = "速球主体"
+    elif br_pct >= 0.40: style = "変化球主体"
+    elif os_pct >= 0.20: style = "軟投系"
+    else:                style = "バランス型"
+
+    velo_label = ""
+    if avg_velo:
+        if avg_velo >= 95:   velo_label = "・剛速球"
+        elif avg_velo >= 91: velo_label = "・中速"
+        else:                velo_label = "・軟投"
+
+    best_off = max(
+        (r for r in pitch_rows if r["pitch_type"] not in _FB_SET and r["whiff_rate"] is not None and r["usage_pct"] >= 0.10),
+        key=lambda x: x["whiff_rate"], default=None,
+    )
+    best_label = f"・{PITCH_LABELS.get(best_off['pitch_type'], best_off['pitch_type'])}が決め球" if best_off else ""
+
+    return {
+        "p_throws":        p_throws,
+        "n_bf":            n_bf,
+        "k_pct":           round(float(n_k / n_bf), 3),
+        "bb_pct":          round(float(n_bb / n_bf), 3),
+        "xwoba_against":   xwoba_against,
+        "whiff_rate":      round(overall_whiff, 3) if overall_whiff else None,
+        "avg_velo":        avg_velo,
+        "pitcher_type":    f"{style}{velo_label}{best_label}",
+        "pitch_breakdown": pitch_rows,
+    }
 
 # ─── ストライクゾーン共通シェイプ ──────────────────────────
 SZ_X   = 0.708   # 半幅（ft）
@@ -586,6 +687,19 @@ st.caption("Shohei Ohtani Matchup Predictor")
 
 ohtani_batter_df = load_ohtani_batter_cached()
 
+# 大谷の過去平均 xwOBA（打者評価のベースライン）
+def _ohtani_avg_xwoba(df: pd.DataFrame):
+    if df.empty: return None
+    sub = df[df["woba_denom"].fillna(0) > 0]
+    v = sub["estimated_woba_using_speedangle"].dropna().mean()
+    return round(float(v), 3) if pd.notna(v) else None
+
+ohtani_career_xwoba = _ohtani_avg_xwoba(ohtani_batter_df)
+
+@st.cache_data(ttl=3600, show_spinner=False)
+def load_opp_pitcher_cached(pitcher_id: int | None):
+    return _load_opponent("pitcher", pitcher_id) if pitcher_id else None
+
 tab_pred, tab_stats = st.tabs(["⚾ 対戦予想", "📊 今季Stats"])
 
 with tab_pred:
@@ -669,14 +783,18 @@ with tab_pred:
     else:
         woba_val  = batter_pred.get("woba")
         xwoba_val = batter_pred.get("xwoba")
-        grade_label, grade_color = grade(xwoba_val or woba_val)
+        grade_label, grade_color, grade_diff = grade_vs_ohtani(xwoba_val or woba_val, ohtani_career_xwoba)
+
+        diff_sign = "+" if grade_diff >= 0 else ""
+        avg_text  = f"大谷過去平均 xwOBA {ohtani_career_xwoba:.3f} 比 {diff_sign}{grade_diff:.3f}" if ohtani_career_xwoba else ""
 
         st.markdown(f"""
         <div style="background:linear-gradient(135deg,#1a2535,#0d1a2a);border-radius:16px;
                     padding:16px 20px;margin:8px 0 16px 0;border:1px solid #243447;">
-          <div style="font-size:0.8rem;color:#8899aa;margin-bottom:4px">総合評価</div>
+          <div style="font-size:0.8rem;color:#8899aa;margin-bottom:4px">総合評価（大谷過去成績比）</div>
           <div style="font-size:2.2rem;font-weight:800;color:{grade_color}">{grade_label}</div>
-          <div style="font-size:0.8rem;color:#8899aa;margin-top:4px">vs {batter_out.get('opponent_pitcher','---')}</div>
+          <div style="font-size:0.78rem;color:#8899aa;margin-top:6px">{avg_text}</div>
+          <div style="font-size:0.8rem;color:#8899aa;margin-top:2px">vs {batter_out.get('opponent_pitcher','---')}</div>
         </div>
         """, unsafe_allow_html=True)
 
@@ -700,11 +818,77 @@ with tab_pred:
 
     st.divider()
 
-    # ── ② 球コース図 ──────────────────────────────────────────
-    st.markdown('<div class="section-header">🎯 球コース図（大谷打席）</div>', unsafe_allow_html=True)
+    # ── ② 相手先発投手プロファイル ────────────────────────────
+    st.markdown('<div class="section-header">📋 相手先発投手</div>', unsafe_allow_html=True)
 
     opp_pitcher_id    = output.get("ohtani_batter", {}).get("opponent_pitcher_id")
     pitcher_name      = output.get("ohtani_batter", {}).get("opponent_pitcher", "")
+
+    opp_pitcher_df = load_opp_pitcher_cached(opp_pitcher_id)
+
+    if opp_pitcher_df is not None and not opp_pitcher_df.empty:
+        pinfo = build_opponent_pitcher_info(opp_pitcher_df)
+
+        hand_color = "#4a90d9" if pinfo["p_throws"] == "L" else "#e74c3c"
+        hand_label = "左投げ (LHP)" if pinfo["p_throws"] == "L" else "右投げ (RHP)"
+
+        st.markdown(
+            f'<span style="background:{hand_color};color:#fff;border-radius:6px;'
+            f'padding:3px 10px;font-weight:700;font-size:0.9rem">{hand_label}</span>',
+            unsafe_allow_html=True
+        )
+        st.caption(pitcher_name)
+
+        ci1, ci2, ci3, ci4 = st.columns(4)
+        with ci1: st.metric("K%",     pct(pinfo["k_pct"]),         help="奪三振率")
+        with ci2: st.metric("BB%",    pct(pinfo["bb_pct"]),         help="与四球率")
+        with ci3: st.metric("被xwOBA", fmt(pinfo["xwoba_against"]), help="許容 xwOBA（今季）")
+        with ci4: st.metric("空振り率", pct(pinfo["whiff_rate"]),    help="スイング当たりの空振り率")
+
+        velo_txt = f"{pinfo['avg_velo']:.1f} mph" if pinfo["avg_velo"] else "---"
+        ptype_txt = pinfo.get("pitcher_type") or "---"
+        st.markdown(
+            f'<div style="margin:8px 0;font-size:0.9rem">'
+            f'<b>平均球速:</b> {velo_txt}&nbsp;&nbsp;｜&nbsp;&nbsp;'
+            f'<b>投手タイプ:</b> {ptype_txt}</div>',
+            unsafe_allow_html=True
+        )
+
+        pitch_rows = pinfo.get("pitch_breakdown", [])
+        if pitch_rows:
+            import pandas as _pd2
+            pitch_disp = _pd2.DataFrame(pitch_rows)
+            pitch_disp = pitch_disp.rename(columns={
+                "pitch_type": "球種",
+                "usage_pct":  "割合%",
+                "avg_speed":  "平均球速",
+                "avg_spin":   "回転数",
+                "xba":        "被xBA",
+                "whiff_rate": "空振り率",
+            })
+            for col in ["割合%", "被xBA", "空振り率"]:
+                if col in pitch_disp.columns:
+                    pitch_disp[col] = pitch_disp[col].apply(
+                        lambda v: f"{v*100:.1f}%" if pd.notna(v) else "---"
+                    )
+            for col in ["平均球速"]:
+                if col in pitch_disp.columns:
+                    pitch_disp[col] = pitch_disp[col].apply(
+                        lambda v: f"{v:.1f}" if pd.notna(v) else "---"
+                    )
+            for col in ["回転数"]:
+                if col in pitch_disp.columns:
+                    pitch_disp[col] = pitch_disp[col].apply(
+                        lambda v: f"{int(v)}" if pd.notna(v) else "---"
+                    )
+            st.dataframe(pitch_disp.set_index("球種"), use_container_width=True)
+    else:
+        st.info("相手先発投手のデータがありません。")
+
+    st.divider()
+
+    # ── ③ 球コース図 ──────────────────────────────────────────
+    st.markdown('<div class="section-header">🎯 球コース図（大谷打席）</div>', unsafe_allow_html=True)
 
     # 凡例説明
     with st.expander("色の見方"):
