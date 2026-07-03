@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-02",
-    "game_pk": 823935,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "San Diego Padres",
-    "opponent_team": "San Diego Padres",
-    "opponent_team_id": 135,
-    "opp_starter_id": 681190,
-    "opp_starter_name": "Randy Vásquez",
-    "dodgers_starter_id": 808963,
-    "dodgers_starter_name": "Roki Sasaki",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-03",
     "game_pk": 823933,
     "status": "Preview",
@@ -347,6 +332,21 @@
   {
     "game_date": "2026-08-01",
     "game_pk": 823920,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Boston Red Sox",
+    "opponent_team": "Boston Red Sox",
+    "opponent_team_id": 111,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-02",
+    "game_pk": 823919,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
