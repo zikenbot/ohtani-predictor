@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-07",
-    "game_pk": 823929,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Colorado Rockies",
-    "opponent_team": "Colorado Rockies",
-    "opponent_team_id": 115,
-    "opp_starter_id": 547179,
-    "opp_starter_name": "Michael Lorenzen",
-    "dodgers_starter_id": 680736,
-    "dodgers_starter_name": "Justin Wrobleski",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-08",
     "game_pk": 823928,
     "status": "Preview",
@@ -23,8 +8,8 @@
     "away_team": "Colorado Rockies",
     "opponent_team": "Colorado Rockies",
     "opponent_team_id": 115,
-    "opp_starter_id": 663372,
-    "opp_starter_name": "Ryan Feltner",
+    "opp_starter_id": 687312,
+    "opp_starter_name": "Gabriel Hughes",
     "dodgers_starter_id": 808963,
     "dodgers_starter_name": "Roki Sasaki",
     "ohtani_starting_pitcher": false
@@ -338,6 +323,21 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Chicago Cubs",
     "opponent_team_id": 112,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-07",
+    "game_pk": 825051,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Arizona Diamondbacks",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Arizona Diamondbacks",
+    "opponent_team_id": 109,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
     "dodgers_starter_id": null,
