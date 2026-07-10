@@ -8,11 +8,11 @@
     "away_team": "Arizona Diamondbacks",
     "opponent_team": "Arizona Diamondbacks",
     "opponent_team_id": 109,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": 660271,
-    "dodgers_starter_name": "Shohei Ohtani",
-    "ohtani_starting_pitcher": true
+    "opp_starter_id": 593958,
+    "opp_starter_name": "Eduardo Rodriguez",
+    "dodgers_starter_id": 669165,
+    "dodgers_starter_name": "Kyle Hurt",
+    "ohtani_starting_pitcher": false
   },
   {
     "game_date": "2026-07-11",
@@ -23,8 +23,8 @@
     "away_team": "Arizona Diamondbacks",
     "opponent_team": "Arizona Diamondbacks",
     "opponent_team_id": 109,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 694297,
+    "opp_starter_name": "Brandon Pfaadt",
     "dodgers_starter_id": 808967,
     "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
@@ -38,8 +38,8 @@
     "away_team": "Arizona Diamondbacks",
     "opponent_team": "Arizona Diamondbacks",
     "opponent_team_id": 109,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 668678,
+    "opp_starter_name": "Zac Gallen",
     "dodgers_starter_id": 686218,
     "dodgers_starter_name": "Emmet Sheehan",
     "ohtani_starting_pitcher": false
@@ -332,6 +332,21 @@
   {
     "game_date": "2026-08-08",
     "game_pk": 825049,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Arizona Diamondbacks",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Arizona Diamondbacks",
+    "opponent_team_id": 109,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-09",
+    "game_pk": 825050,
     "status": "Preview",
     "home_away": "away",
     "home_team": "Arizona Diamondbacks",
