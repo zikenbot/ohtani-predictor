@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-12",
-    "game_pk": 823925,
-    "status": "Live",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Arizona Diamondbacks",
-    "opponent_team": "Arizona Diamondbacks",
-    "opponent_team_id": 109,
-    "opp_starter_id": 683352,
-    "opp_starter_name": "Mitch Bratt",
-    "dodgers_starter_id": 686218,
-    "dodgers_starter_name": "Emmet Sheehan",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-17",
     "game_pk": 823524,
     "status": "Preview",
@@ -347,6 +332,21 @@
   {
     "game_date": "2026-08-11",
     "game_pk": 823917,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Kansas City Royals",
+    "opponent_team": "Kansas City Royals",
+    "opponent_team_id": 118,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-12",
+    "game_pk": 823916,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
