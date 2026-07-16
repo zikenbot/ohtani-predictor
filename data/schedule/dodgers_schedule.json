@@ -8,10 +8,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "New York Yankees",
     "opponent_team_id": 147,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 543037,
+    "opp_starter_name": "Gerrit Cole",
+    "dodgers_starter_id": 808963,
+    "dodgers_starter_name": "Roki Sasaki",
     "ohtani_starting_pitcher": false
   },
   {
@@ -23,10 +23,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "New York Yankees",
     "opponent_team_id": 147,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 677960,
+    "opp_starter_name": "Ryan Weathers",
+    "dodgers_starter_id": 686218,
+    "dodgers_starter_name": "Emmet Sheehan",
     "ohtani_starting_pitcher": false
   },
   {
@@ -38,10 +38,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "New York Yankees",
     "opponent_team_id": 147,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 693645,
+    "opp_starter_name": "Cam Schlittler",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -377,6 +377,21 @@
   {
     "game_date": "2026-08-14",
     "game_pk": 823913,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Milwaukee Brewers",
+    "opponent_team": "Milwaukee Brewers",
+    "opponent_team_id": 158,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-15",
+    "game_pk": 823914,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
