@@ -1,35 +1,5 @@
 [
   {
-    "game_date": "2026-07-19",
-    "game_pk": 823523,
-    "status": "Final",
-    "home_away": "away",
-    "home_team": "New York Yankees",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "New York Yankees",
-    "opponent_team_id": 147,
-    "opp_starter_id": 693645,
-    "opp_starter_name": "Cam Schlittler",
-    "dodgers_starter_id": 808967,
-    "dodgers_starter_name": "Yoshinobu Yamamoto",
-    "ohtani_starting_pitcher": false
-  },
-  {
-    "game_date": "2026-07-19",
-    "game_pk": 823521,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "New York Yankees",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "New York Yankees",
-    "opponent_team_id": 147,
-    "opp_starter_id": 642232,
-    "opp_starter_name": "Ryan Yarbrough",
-    "dodgers_starter_id": 694361,
-    "dodgers_starter_name": "Will Klein",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-20",
     "game_pk": 823436,
     "status": "Preview",
@@ -55,8 +25,8 @@
     "opponent_team_id": 143,
     "opp_starter_id": 554430,
     "opp_starter_name": "Zack Wheeler",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 680736,
+    "dodgers_starter_name": "Justin Wrobleski",
     "ohtani_starting_pitcher": false
   },
   {
@@ -70,8 +40,8 @@
     "opponent_team_id": 143,
     "opp_starter_id": 605400,
     "opp_starter_name": "Aaron Nola",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 641778,
+    "dodgers_starter_name": "Eric Lauer",
     "ohtani_starting_pitcher": false
   },
   {
@@ -422,6 +392,21 @@
   {
     "game_date": "2026-08-18",
     "game_pk": 824319,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Colorado Rockies",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Colorado Rockies",
+    "opponent_team_id": 115,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-19",
+    "game_pk": 824318,
     "status": "Preview",
     "home_away": "away",
     "home_team": "Colorado Rockies",
