@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-20",
-    "game_pk": 823436,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Philadelphia Phillies",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Philadelphia Phillies",
-    "opponent_team_id": 143,
-    "opp_starter_id": 650911,
-    "opp_starter_name": "Cristopher Sánchez",
-    "dodgers_starter_id": 686218,
-    "dodgers_starter_name": "Emmet Sheehan",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-21",
     "game_pk": 823437,
     "status": "Preview",
