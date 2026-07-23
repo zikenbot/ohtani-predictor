@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-22",
-    "game_pk": 823438,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Philadelphia Phillies",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Philadelphia Phillies",
-    "opponent_team_id": 143,
-    "opp_starter_id": 605400,
-    "opp_starter_name": "Aaron Nola",
-    "dodgers_starter_id": 641778,
-    "dodgers_starter_name": "Eric Lauer",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-24",
     "game_pk": 823601,
     "status": "Preview",
@@ -392,6 +377,21 @@
   {
     "game_date": "2026-08-21",
     "game_pk": 823911,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Pittsburgh Pirates",
+    "opponent_team": "Pittsburgh Pirates",
+    "opponent_team_id": 134,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-22",
+    "game_pk": 823910,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
