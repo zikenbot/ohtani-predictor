@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-24",
-    "game_pk": 823601,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "New York Mets",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "New York Mets",
-    "opponent_team_id": 121,
-    "opp_starter_id": 640455,
-    "opp_starter_name": "Sean Manaea",
-    "dodgers_starter_id": 808963,
-    "dodgers_starter_name": "Roki Sasaki",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-25",
     "game_pk": 823600,
     "status": "Preview",
