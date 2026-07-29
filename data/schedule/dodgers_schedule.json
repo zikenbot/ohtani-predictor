@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-28",
-    "game_pk": 823923,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Seattle Mariners",
-    "opponent_team": "Seattle Mariners",
-    "opponent_team_id": 136,
-    "opp_starter_id": 622491,
-    "opp_starter_name": "Luis Castillo",
-    "dodgers_starter_id": 680736,
-    "dodgers_starter_name": "Justin Wrobleski",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-29",
     "game_pk": 823924,
     "status": "Preview",
@@ -413,6 +398,21 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Atlanta Braves",
     "opponent_team_id": 144,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-28",
+    "game_pk": 824231,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Detroit Tigers",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Detroit Tigers",
+    "opponent_team_id": 116,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
     "dodgers_starter_id": null,
