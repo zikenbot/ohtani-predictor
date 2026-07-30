@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-29",
-    "game_pk": 823924,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Seattle Mariners",
-    "opponent_team": "Seattle Mariners",
-    "opponent_team_id": 136,
-    "opp_starter_id": 676106,
-    "opp_starter_name": "Emerson Hancock",
-    "dodgers_starter_id": 641778,
-    "dodgers_starter_name": "Eric Lauer",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-07-30",
     "game_pk": 823921,
     "status": "Preview",
@@ -23,8 +8,8 @@
     "away_team": "Seattle Mariners",
     "opponent_team": "Seattle Mariners",
     "opponent_team_id": 136,
-    "opp_starter_id": 682243,
-    "opp_starter_name": "Bryce Miller",
+    "opp_starter_id": 693433,
+    "opp_starter_name": "Bryan Woo",
     "dodgers_starter_id": 808963,
     "dodgers_starter_name": "Roki Sasaki",
     "ohtani_starting_pitcher": false
@@ -38,8 +23,8 @@
     "away_team": "Boston Red Sox",
     "opponent_team": "Boston Red Sox",
     "opponent_team_id": 111,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 624133,
+    "opp_starter_name": "Ranger Suarez",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -53,10 +38,10 @@
     "away_team": "Boston Red Sox",
     "opponent_team": "Boston Red Sox",
     "opponent_team_id": 111,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 801139,
+    "opp_starter_name": "Payton Tolle",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -68,10 +53,10 @@
     "away_team": "Boston Red Sox",
     "opponent_team": "Boston Red Sox",
     "opponent_team_id": 111,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 687562,
+    "opp_starter_name": "Jake Bennett",
+    "dodgers_starter_id": 686218,
+    "dodgers_starter_name": "Emmet Sheehan",
     "ohtani_starting_pitcher": false
   },
   {
@@ -407,6 +392,21 @@
   {
     "game_date": "2026-08-28",
     "game_pk": 824231,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Detroit Tigers",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Detroit Tigers",
+    "opponent_team_id": 116,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-08-29",
+    "game_pk": 824230,
     "status": "Preview",
     "home_away": "away",
     "home_team": "Detroit Tigers",
