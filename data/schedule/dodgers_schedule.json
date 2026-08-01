@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-07-31",
-    "game_pk": 823922,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Boston Red Sox",
-    "opponent_team": "Boston Red Sox",
-    "opponent_team_id": 111,
-    "opp_starter_id": 624133,
-    "opp_starter_name": "Ranger Suarez",
-    "dodgers_starter_id": 683618,
-    "dodgers_starter_name": "Edgardo Henriquez",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-01",
     "game_pk": 823920,
     "status": "Preview",
