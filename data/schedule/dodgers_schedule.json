@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-03",
-    "game_pk": 824647,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Chicago Cubs",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Chicago Cubs",
-    "opponent_team_id": 112,
-    "opp_starter_id": 571510,
-    "opp_starter_name": "Matthew Boyd",
-    "dodgers_starter_id": 680736,
-    "dodgers_starter_name": "Justin Wrobleski",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-04",
     "game_pk": 824645,
     "status": "Preview",
@@ -40,8 +25,8 @@
     "opponent_team_id": 112,
     "opp_starter_id": 684007,
     "opp_starter_name": "Shota Imanaga",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 641778,
+    "dodgers_starter_name": "Eric Lauer",
     "ohtani_starting_pitcher": false
   },
   {
@@ -392,6 +377,21 @@
   {
     "game_date": "2026-09-02",
     "game_pk": 823906,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "St. Louis Cardinals",
+    "opponent_team": "St. Louis Cardinals",
+    "opponent_team_id": 138,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-03",
+    "game_pk": 823907,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
