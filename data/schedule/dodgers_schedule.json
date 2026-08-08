@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-07",
-    "game_pk": 825051,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Arizona Diamondbacks",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Arizona Diamondbacks",
-    "opponent_team_id": 109,
-    "opp_starter_id": 518876,
-    "opp_starter_name": "Merrill Kelly",
-    "dodgers_starter_id": 808963,
-    "dodgers_starter_name": "Roki Sasaki",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-08",
     "game_pk": 825049,
     "status": "Preview",
@@ -55,8 +40,8 @@
     "opponent_team_id": 118,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 669373,
+    "dodgers_starter_name": "Tarik Skubal",
     "ohtani_starting_pitcher": false
   },
   {
@@ -70,8 +55,8 @@
     "opponent_team_id": 118,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 605483,
+    "dodgers_starter_name": "Blake Snell",
     "ohtani_starting_pitcher": false
   },
   {
@@ -413,6 +398,21 @@
     "away_team": "Washington Nationals",
     "opponent_team": "Washington Nationals",
     "opponent_team_id": 120,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-07",
+    "game_pk": 823902,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "Cincinnati Reds",
+    "opponent_team": "Cincinnati Reds",
+    "opponent_team_id": 113,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
     "dodgers_starter_id": null,
