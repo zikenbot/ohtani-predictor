@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-10",
-    "game_pk": 823918,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Kansas City Royals",
-    "opponent_team": "Kansas City Royals",
-    "opponent_team_id": 118,
-    "opp_starter_id": 702070,
-    "opp_starter_name": "Noah Cameron",
-    "dodgers_starter_id": 669373,
-    "dodgers_starter_name": "Tarik Skubal",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-11",
     "game_pk": 823917,
     "status": "Preview",
