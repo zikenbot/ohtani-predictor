@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-11",
-    "game_pk": 823917,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Kansas City Royals",
-    "opponent_team": "Kansas City Royals",
-    "opponent_team_id": 118,
-    "opp_starter_id": 608379,
-    "opp_starter_name": "Michael Wacha",
-    "dodgers_starter_id": 605483,
-    "dodgers_starter_name": "Blake Snell",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-12",
     "game_pk": 823916,
     "status": "Preview",
@@ -25,8 +10,8 @@
     "opponent_team_id": 118,
     "opp_starter_id": 663738,
     "opp_starter_name": "Daniel Lynch IV",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 641778,
+    "dodgers_starter_name": "Eric Lauer",
     "ohtani_starting_pitcher": false
   },
   {
@@ -38,8 +23,8 @@
     "away_team": "Milwaukee Brewers",
     "opponent_team": "Milwaukee Brewers",
     "opponent_team_id": 158,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 675660,
+    "opp_starter_name": "Shane Drohan",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -53,8 +38,8 @@
     "away_team": "Milwaukee Brewers",
     "opponent_team": "Milwaukee Brewers",
     "opponent_team_id": 158,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 688107,
+    "opp_starter_name": "Robert Gasser",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -68,8 +53,8 @@
     "away_team": "Milwaukee Brewers",
     "opponent_team": "Milwaukee Brewers",
     "opponent_team_id": 158,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 694819,
+    "opp_starter_name": "Jacob Misiorowski",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -83,8 +68,8 @@
     "away_team": "Milwaukee Brewers",
     "opponent_team": "Milwaukee Brewers",
     "opponent_team_id": 158,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 701656,
+    "opp_starter_name": "Logan Henderson",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -398,6 +383,21 @@
     "away_team": "Cincinnati Reds",
     "opponent_team": "Cincinnati Reds",
     "opponent_team_id": 113,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-11",
+    "game_pk": 823817,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Miami Marlins",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Miami Marlins",
+    "opponent_team_id": 146,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
     "dodgers_starter_id": null,
