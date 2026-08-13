@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-12",
-    "game_pk": 823916,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Kansas City Royals",
-    "opponent_team": "Kansas City Royals",
-    "opponent_team_id": 118,
-    "opp_starter_id": 663738,
-    "opp_starter_name": "Daniel Lynch IV",
-    "dodgers_starter_id": 641778,
-    "dodgers_starter_name": "Eric Lauer",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-13",
     "game_pk": 823915,
     "status": "Preview",
@@ -25,8 +10,8 @@
     "opponent_team_id": 158,
     "opp_starter_id": 675660,
     "opp_starter_name": "Shane Drohan",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808963,
+    "dodgers_starter_name": "Roki Sasaki",
     "ohtani_starting_pitcher": false
   },
   {
@@ -40,8 +25,8 @@
     "opponent_team_id": 158,
     "opp_starter_id": 688107,
     "opp_starter_name": "Robert Gasser",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -55,8 +40,8 @@
     "opponent_team_id": 158,
     "opp_starter_id": 694819,
     "opp_starter_name": "Jacob Misiorowski",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 680736,
+    "dodgers_starter_name": "Justin Wrobleski",
     "ohtani_starting_pitcher": false
   },
   {
@@ -70,8 +55,8 @@
     "opponent_team_id": 158,
     "opp_starter_id": 701656,
     "opp_starter_name": "Logan Henderson",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 669373,
+    "dodgers_starter_name": "Tarik Skubal",
     "ohtani_starting_pitcher": false
   },
   {
@@ -392,6 +377,21 @@
   {
     "game_date": "2026-09-11",
     "game_pk": 823817,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Miami Marlins",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Miami Marlins",
+    "opponent_team_id": 146,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-12",
+    "game_pk": 823819,
     "status": "Preview",
     "home_away": "away",
     "home_team": "Miami Marlins",
