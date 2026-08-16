@@ -1,23 +1,8 @@
 [
   {
-    "game_date": "2026-08-15",
-    "game_pk": 823914,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Milwaukee Brewers",
-    "opponent_team": "Milwaukee Brewers",
-    "opponent_team_id": 158,
-    "opp_starter_id": 694819,
-    "opp_starter_name": "Jacob Misiorowski",
-    "dodgers_starter_id": 680736,
-    "dodgers_starter_name": "Justin Wrobleski",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-16",
     "game_pk": 823912,
-    "status": "Preview",
+    "status": "Live",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
     "away_team": "Milwaukee Brewers",
@@ -38,10 +23,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Colorado Rockies",
     "opponent_team_id": 115,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 608372,
+    "opp_starter_name": "Tomoyuki Sugano",
+    "dodgers_starter_id": 605483,
+    "dodgers_starter_name": "Blake Snell",
     "ohtani_starting_pitcher": false
   },
   {
@@ -53,10 +38,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Colorado Rockies",
     "opponent_team_id": 115,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 663372,
+    "opp_starter_name": "Ryan Feltner",
+    "dodgers_starter_id": 641778,
+    "dodgers_starter_name": "Eric Lauer",
     "ohtani_starting_pitcher": false
   },
   {
@@ -68,10 +53,10 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Colorado Rockies",
     "opponent_team_id": 115,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 607536,
+    "opp_starter_name": "Kyle Freeland",
+    "dodgers_starter_id": 808963,
+    "dodgers_starter_name": "Roki Sasaki",
     "ohtani_starting_pitcher": false
   },
   {
@@ -392,6 +377,21 @@
   {
     "game_date": "2026-09-14",
     "game_pk": 824465,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Cincinnati Reds",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Cincinnati Reds",
+    "opponent_team_id": 113,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-15",
+    "game_pk": 824466,
     "status": "Preview",
     "home_away": "away",
     "home_team": "Cincinnati Reds",
