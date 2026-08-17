@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-16",
-    "game_pk": 823912,
-    "status": "Live",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Milwaukee Brewers",
-    "opponent_team": "Milwaukee Brewers",
-    "opponent_team_id": 158,
-    "opp_starter_id": 701656,
-    "opp_starter_name": "Logan Henderson",
-    "dodgers_starter_id": 669373,
-    "dodgers_starter_name": "Tarik Skubal",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-17",
     "game_pk": 824320,
     "status": "Preview",
@@ -392,6 +377,21 @@
   {
     "game_date": "2026-09-15",
     "game_pk": 824466,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "Cincinnati Reds",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "Cincinnati Reds",
+    "opponent_team_id": 113,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-16",
+    "game_pk": 824467,
     "status": "Preview",
     "home_away": "away",
     "home_team": "Cincinnati Reds",
