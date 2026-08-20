@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-19",
-    "game_pk": 824318,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Colorado Rockies",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Colorado Rockies",
-    "opponent_team_id": 115,
-    "opp_starter_id": 607536,
-    "opp_starter_name": "Kyle Freeland",
-    "dodgers_starter_id": 808963,
-    "dodgers_starter_name": "Roki Sasaki",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-21",
     "game_pk": 823911,
     "status": "Preview",
@@ -25,8 +10,8 @@
     "opponent_team_id": 134,
     "opp_starter_id": 696149,
     "opp_starter_name": "Bubba Chandler",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -40,8 +25,8 @@
     "opponent_team_id": 134,
     "opp_starter_id": 683003,
     "opp_starter_name": "Jared Jones",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 669373,
+    "dodgers_starter_name": "Tarik Skubal",
     "ohtani_starting_pitcher": false
   },
   {
@@ -55,8 +40,8 @@
     "opponent_team_id": 134,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 605483,
+    "dodgers_starter_name": "Blake Snell",
     "ohtani_starting_pitcher": false
   },
   {
@@ -392,6 +377,21 @@
   {
     "game_date": "2026-09-18",
     "game_pk": 823898,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "San Francisco Giants",
+    "opponent_team": "San Francisco Giants",
+    "opponent_team_id": 137,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-19",
+    "game_pk": 823899,
     "status": "Preview",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
