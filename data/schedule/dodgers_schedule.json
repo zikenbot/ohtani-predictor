@@ -403,5 +403,20 @@
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-20",
+    "game_pk": 823896,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "San Francisco Giants",
+    "opponent_team": "San Francisco Giants",
+    "opponent_team_id": 137,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
   }
 ]
