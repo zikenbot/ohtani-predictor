@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-21",
-    "game_pk": 823911,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Pittsburgh Pirates",
-    "opponent_team": "Pittsburgh Pirates",
-    "opponent_team_id": 134,
-    "opp_starter_id": 696149,
-    "opp_starter_name": "Bubba Chandler",
-    "dodgers_starter_id": 808967,
-    "dodgers_starter_name": "Yoshinobu Yamamoto",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-22",
     "game_pk": 823910,
     "status": "Preview",
