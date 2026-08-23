@@ -1,30 +1,15 @@
 [
   {
-    "game_date": "2026-08-22",
-    "game_pk": 823910,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Pittsburgh Pirates",
-    "opponent_team": "Pittsburgh Pirates",
-    "opponent_team_id": 134,
-    "opp_starter_id": 683003,
-    "opp_starter_name": "Jared Jones",
-    "dodgers_starter_id": 669373,
-    "dodgers_starter_name": "Tarik Skubal",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-23",
     "game_pk": 823909,
-    "status": "Preview",
+    "status": "Live",
     "home_away": "home",
     "home_team": "Los Angeles Dodgers",
     "away_team": "Pittsburgh Pirates",
     "opponent_team": "Pittsburgh Pirates",
     "opponent_team_id": 134,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 669199,
+    "opp_starter_name": "Lake Bachar",
     "dodgers_starter_id": 605483,
     "dodgers_starter_name": "Blake Snell",
     "ohtani_starting_pitcher": false
@@ -40,8 +25,8 @@
     "opponent_team_id": 144,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 607192,
+    "dodgers_starter_name": "Tyler Glasnow",
     "ohtani_starting_pitcher": false
   },
   {
@@ -55,8 +40,8 @@
     "opponent_team_id": 144,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808963,
+    "dodgers_starter_name": "Roki Sasaki",
     "ohtani_starting_pitcher": false
   },
   {
@@ -70,8 +55,8 @@
     "opponent_team_id": 144,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -398,6 +383,21 @@
     "away_team": "San Francisco Giants",
     "opponent_team": "San Francisco Giants",
     "opponent_team_id": 137,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-22",
+    "game_pk": 823897,
+    "status": "Preview",
+    "home_away": "home",
+    "home_team": "Los Angeles Dodgers",
+    "away_team": "San Diego Padres",
+    "opponent_team": "San Diego Padres",
+    "opponent_team_id": 135,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
     "dodgers_starter_id": null,
