@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-27",
-    "game_pk": 824879,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Atlanta Braves",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Atlanta Braves",
-    "opponent_team_id": 144,
-    "opp_starter_id": 519242,
-    "opp_starter_name": "Chris Sale",
-    "dodgers_starter_id": 808967,
-    "dodgers_starter_name": "Yoshinobu Yamamoto",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-28",
     "game_pk": 824231,
     "status": "Preview",
@@ -407,6 +392,21 @@
   {
     "game_date": "2026-09-26",
     "game_pk": 823165,
+    "status": "Preview",
+    "home_away": "away",
+    "home_team": "San Francisco Giants",
+    "away_team": "Los Angeles Dodgers",
+    "opponent_team": "San Francisco Giants",
+    "opponent_team_id": 137,
+    "opp_starter_id": null,
+    "opp_starter_name": "TBD",
+    "dodgers_starter_id": null,
+    "dodgers_starter_name": "TBD",
+    "ohtani_starting_pitcher": false
+  },
+  {
+    "game_date": "2026-09-27",
+    "game_pk": 823164,
     "status": "Preview",
     "home_away": "away",
     "home_team": "San Francisco Giants",
