@@ -1,23 +1,8 @@
 [
   {
-    "game_date": "2026-08-29",
-    "game_pk": 824230,
-    "status": "Final",
-    "home_away": "away",
-    "home_team": "Detroit Tigers",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Detroit Tigers",
-    "opponent_team_id": 116,
-    "opp_starter_id": 672456,
-    "opp_starter_name": "Keider Montero",
-    "dodgers_starter_id": 605483,
-    "dodgers_starter_name": "Blake Snell",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-08-30",
     "game_pk": 824232,
-    "status": "Preview",
+    "status": "Final",
     "home_away": "away",
     "home_team": "Detroit Tigers",
     "away_team": "Los Angeles Dodgers",
@@ -38,10 +23,10 @@
     "away_team": "St. Louis Cardinals",
     "opponent_team": "St. Louis Cardinals",
     "opponent_team_id": 138,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "opp_starter_id": 700241,
+    "opp_starter_name": "Michael McGreevy",
+    "dodgers_starter_id": 641778,
+    "dodgers_starter_name": "Eric Lauer",
     "ohtani_starting_pitcher": false
   },
   {
@@ -55,8 +40,8 @@
     "opponent_team_id": 138,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -70,8 +55,8 @@
     "opponent_team_id": 138,
     "opp_starter_id": null,
     "opp_starter_name": "TBD",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 669373,
+    "dodgers_starter_name": "Tarik Skubal",
     "ohtani_starting_pitcher": false
   },
   {
