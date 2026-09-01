@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-08-30",
-    "game_pk": 824232,
-    "status": "Final",
-    "home_away": "away",
-    "home_team": "Detroit Tigers",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Detroit Tigers",
-    "opponent_team_id": 116,
-    "opp_starter_id": 664285,
-    "opp_starter_name": "Framber Valdez",
-    "dodgers_starter_id": 607192,
-    "dodgers_starter_name": "Tyler Glasnow",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-01",
     "game_pk": 823908,
     "status": "Preview",
