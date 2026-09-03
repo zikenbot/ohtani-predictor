@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-02",
-    "game_pk": 823906,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "St. Louis Cardinals",
-    "opponent_team": "St. Louis Cardinals",
-    "opponent_team_id": 138,
-    "opp_starter_id": 802408,
-    "opp_starter_name": "Brycen Mautz",
-    "dodgers_starter_id": 808967,
-    "dodgers_starter_name": "Yoshinobu Yamamoto",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-03",
     "game_pk": 823907,
     "status": "Preview",
