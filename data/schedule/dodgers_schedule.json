@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-06",
-    "game_pk": 823903,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Washington Nationals",
-    "opponent_team": "Washington Nationals",
-    "opponent_team_id": 120,
-    "opp_starter_id": 674841,
-    "opp_starter_name": "Andrew Alvarez",
-    "dodgers_starter_id": 680736,
-    "dodgers_starter_name": "Justin Wrobleski",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-07",
     "game_pk": 823902,
     "status": "Preview",
@@ -25,8 +10,8 @@
     "opponent_team_id": 113,
     "opp_starter_id": 695505,
     "opp_starter_name": "Chase Burns",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 686218,
+    "dodgers_starter_name": "Emmet Sheehan",
     "ohtani_starting_pitcher": false
   },
   {
@@ -40,8 +25,8 @@
     "opponent_team_id": 113,
     "opp_starter_id": 666157,
     "opp_starter_name": "Nick Lodolo",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 669373,
+    "dodgers_starter_name": "Tarik Skubal",
     "ohtani_starting_pitcher": false
   },
   {
@@ -55,8 +40,8 @@
     "opponent_team_id": 113,
     "opp_starter_id": 695076,
     "opp_starter_name": "Rhett Lowder",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
