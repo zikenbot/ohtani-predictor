@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-07",
-    "game_pk": 823902,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Cincinnati Reds",
-    "opponent_team": "Cincinnati Reds",
-    "opponent_team_id": 113,
-    "opp_starter_id": 695505,
-    "opp_starter_name": "Chase Burns",
-    "dodgers_starter_id": 686218,
-    "dodgers_starter_name": "Emmet Sheehan",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-08",
     "game_pk": 823901,
     "status": "Preview",
