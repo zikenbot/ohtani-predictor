@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-08",
-    "game_pk": 823901,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Cincinnati Reds",
-    "opponent_team": "Cincinnati Reds",
-    "opponent_team_id": 113,
-    "opp_starter_id": 666157,
-    "opp_starter_name": "Nick Lodolo",
-    "dodgers_starter_id": 669373,
-    "dodgers_starter_name": "Tarik Skubal",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-09",
     "game_pk": 823900,
     "status": "Preview",
