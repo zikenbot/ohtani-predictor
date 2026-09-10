@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-09",
-    "game_pk": 823900,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Cincinnati Reds",
-    "opponent_team": "Cincinnati Reds",
-    "opponent_team_id": 113,
-    "opp_starter_id": 695076,
-    "opp_starter_name": "Rhett Lowder",
-    "dodgers_starter_id": 808967,
-    "dodgers_starter_name": "Yoshinobu Yamamoto",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-11",
     "game_pk": 823817,
     "status": "Preview",
@@ -23,8 +8,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Miami Marlins",
     "opponent_team_id": 146,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 687473,
+    "opp_starter_name": "Ryan Gusto",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -38,8 +23,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Miami Marlins",
     "opponent_team_id": 146,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 663969,
+    "opp_starter_name": "Tyler Phillips",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -53,8 +38,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Miami Marlins",
     "opponent_team_id": 146,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 691587,
+    "opp_starter_name": "Eury Pérez",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
