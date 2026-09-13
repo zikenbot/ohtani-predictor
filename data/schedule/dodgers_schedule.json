@@ -1,23 +1,8 @@
 [
   {
-    "game_date": "2026-09-12",
-    "game_pk": 823819,
-    "status": "Final",
-    "home_away": "away",
-    "home_team": "Miami Marlins",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Miami Marlins",
-    "opponent_team_id": 146,
-    "opp_starter_id": 663969,
-    "opp_starter_name": "Tyler Phillips",
-    "dodgers_starter_id": 607192,
-    "dodgers_starter_name": "Tyler Glasnow",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-13",
     "game_pk": 823815,
-    "status": "Preview",
+    "status": "Final",
     "home_away": "away",
     "home_team": "Miami Marlins",
     "away_team": "Los Angeles Dodgers",
@@ -25,8 +10,8 @@
     "opponent_team_id": 146,
     "opp_starter_id": 691587,
     "opp_starter_name": "Eury Pérez",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 686218,
+    "dodgers_starter_name": "Emmet Sheehan",
     "ohtani_starting_pitcher": false
   },
   {
@@ -40,8 +25,8 @@
     "opponent_team_id": 113,
     "opp_starter_id": 666157,
     "opp_starter_name": "Nick Lodolo",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 669373,
+    "dodgers_starter_name": "Tarik Skubal",
     "ohtani_starting_pitcher": false
   },
   {
@@ -55,8 +40,8 @@
     "opponent_team_id": 113,
     "opp_starter_id": 695076,
     "opp_starter_name": "Rhett Lowder",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -83,8 +68,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Cincinnati Reds",
     "opponent_team_id": 113,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 663903,
+    "opp_starter_name": "Brady Singer",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
