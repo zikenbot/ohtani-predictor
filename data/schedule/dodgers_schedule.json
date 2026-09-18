@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-17",
-    "game_pk": 824464,
-    "status": "Final",
-    "home_away": "away",
-    "home_team": "Cincinnati Reds",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Cincinnati Reds",
-    "opponent_team_id": 113,
-    "opp_starter_id": 663903,
-    "opp_starter_name": "Brady Singer",
-    "dodgers_starter_id": 680736,
-    "dodgers_starter_name": "Justin Wrobleski",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-18",
     "game_pk": 823898,
     "status": "Preview",
