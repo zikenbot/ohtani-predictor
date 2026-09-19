@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-18",
-    "game_pk": 823898,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "San Francisco Giants",
-    "opponent_team": "San Francisco Giants",
-    "opponent_team_id": 137,
-    "opp_starter_id": 702885,
-    "opp_starter_name": "Cesar Perdomo",
-    "dodgers_starter_id": 607192,
-    "dodgers_starter_name": "Tyler Glasnow",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-19",
     "game_pk": 823899,
     "status": "Preview",
@@ -23,8 +8,8 @@
     "away_team": "San Francisco Giants",
     "opponent_team": "San Francisco Giants",
     "opponent_team_id": 137,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 805074,
+    "opp_starter_name": "Yunior Marte",
     "dodgers_starter_id": 669373,
     "dodgers_starter_name": "Tarik Skubal",
     "ohtani_starting_pitcher": false
