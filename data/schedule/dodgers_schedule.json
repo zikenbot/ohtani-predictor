@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-22",
-    "game_pk": 823897,
-    "status": "Preview",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "San Diego Padres",
-    "opponent_team": "San Diego Padres",
-    "opponent_team_id": 135,
-    "opp_starter_id": 650633,
-    "opp_starter_name": "Michael King",
-    "dodgers_starter_id": 592779,
-    "dodgers_starter_name": "Brock Stewart",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-09-23",
     "game_pk": 823894,
     "status": "Preview",
@@ -25,8 +10,8 @@
     "opponent_team_id": 135,
     "opp_starter_id": 592662,
     "opp_starter_name": "Robbie Ray",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 808967,
+    "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
   },
   {
@@ -40,8 +25,8 @@
     "opponent_team_id": 135,
     "opp_starter_id": 601713,
     "opp_starter_name": "Nick Pivetta",
-    "dodgers_starter_id": null,
-    "dodgers_starter_name": "TBD",
+    "dodgers_starter_id": 607192,
+    "dodgers_starter_name": "Tyler Glasnow",
     "ohtani_starting_pitcher": false
   },
   {
@@ -53,8 +38,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "San Francisco Giants",
     "opponent_team_id": 137,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 805074,
+    "opp_starter_name": "Yunior Marte",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
@@ -68,8 +53,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "San Francisco Giants",
     "opponent_team_id": 137,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 683363,
+    "opp_starter_name": "Matt Wilkinson",
     "dodgers_starter_id": null,
     "dodgers_starter_name": "TBD",
     "ohtani_starting_pitcher": false
