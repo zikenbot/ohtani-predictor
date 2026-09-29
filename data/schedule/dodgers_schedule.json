@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-09-27",
-    "game_pk": 823164,
-    "status": "Final",
-    "home_away": "away",
-    "home_team": "San Francisco Giants",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "San Francisco Giants",
-    "opponent_team_id": 137,
-    "opp_starter_id": 693313,
-    "opp_starter_name": "Carson Seymour",
-    "dodgers_starter_id": 676263,
-    "dodgers_starter_name": "Jack Dreyer",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-10-03",
     "game_pk": 849828,
     "status": "Preview",
