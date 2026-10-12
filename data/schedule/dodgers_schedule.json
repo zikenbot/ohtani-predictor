@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-10-11",
-    "game_pk": 849809,
-    "status": "Preview",
-    "home_away": "away",
-    "home_team": "Milwaukee Brewers",
-    "away_team": "Los Angeles Dodgers",
-    "opponent_team": "Milwaukee Brewers",
-    "opponent_team_id": 158,
-    "opp_starter_id": 694819,
-    "opp_starter_name": "Jacob Misiorowski",
-    "dodgers_starter_id": 669373,
-    "dodgers_starter_name": "Tarik Skubal",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-10-12",
     "game_pk": 849812,
     "status": "Preview",
@@ -23,8 +8,8 @@
     "away_team": "Los Angeles Dodgers",
     "opponent_team": "Milwaukee Brewers",
     "opponent_team_id": 158,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 701656,
+    "opp_starter_name": "Logan Henderson",
     "dodgers_starter_id": 808967,
     "dodgers_starter_name": "Yoshinobu Yamamoto",
     "ohtani_starting_pitcher": false
