@@ -1,20 +1,5 @@
 [
   {
-    "game_date": "2026-10-14",
-    "game_pk": 849811,
-    "status": "Live",
-    "home_away": "home",
-    "home_team": "Los Angeles Dodgers",
-    "away_team": "Milwaukee Brewers",
-    "opponent_team": "Milwaukee Brewers",
-    "opponent_team_id": 158,
-    "opp_starter_id": 688107,
-    "opp_starter_name": "Robert Gasser",
-    "dodgers_starter_id": 605483,
-    "dodgers_starter_name": "Blake Snell",
-    "ohtani_starting_pitcher": false
-  },
-  {
     "game_date": "2026-10-15",
     "game_pk": 849810,
     "status": "Preview",
@@ -23,8 +8,8 @@
     "away_team": "Milwaukee Brewers",
     "opponent_team": "Milwaukee Brewers",
     "opponent_team_id": 158,
-    "opp_starter_id": null,
-    "opp_starter_name": "TBD",
+    "opp_starter_id": 675660,
+    "opp_starter_name": "Shane Drohan",
     "dodgers_starter_id": 607192,
     "dodgers_starter_name": "Tyler Glasnow",
     "ohtani_starting_pitcher": false
